@@ -6,6 +6,7 @@ import {
   keyPressed,
   clamp
 } from 'kontra';
+import { Enemy } from './enemy';
 import { Player } from './player';
 
 type CoordType = {
@@ -18,6 +19,11 @@ enum COMPASS_DIR {
   SOUTH_EAST,
   SOUTH
 }
+
+const KEY_UP = 'keyup'
+const KEY_DOWN = 'keydown'
+const ARROW_LEFT = "ArrowLeft"
+const ARROW_RIGHT = "ArrowRight"
 
 function main() {
 
@@ -39,6 +45,9 @@ function main() {
     x: canvas.width / 2,
     y: canvas.height / 2
   }
+
+  let enemy_1: Enemy
+
 
   let location_coords: CoordType[] = []
 
@@ -92,25 +101,33 @@ function main() {
     player.y = location_coords[loc_num].y
   }
 
-  function handlePlayerInput() {
-    let prev_loc = 0
+  function movePlayerInClock(isClock: boolean)
+  {
     const limit = location_coords.length - 1
-
-    if(player.loc_index)
-    {
-      prev_loc = player.loc_index
-    }
-
-    if(keyPressed("arrowleft"))
+    if(isClock)
     {
       player.loc_index = player.loc_index + 1 > limit ? 0 : player.loc_index + 1
-      setPlayerLocation(player.loc_index)
     }
-    else if(keyPressed("arrowright"))
+    else
     {
       player.loc_index = player.loc_index - 1 < 0 ? limit : player.loc_index - 1
-      setPlayerLocation(player.loc_index)
     }
+
+    setPlayerLocation(player.loc_index)
+  }
+
+  function initPlayerInput() {
+    window.addEventListener(KEY_DOWN, (event) => {
+      if(event.key === ARROW_LEFT)
+      {
+        movePlayerInClock(true)
+      }
+      else if(event.key === ARROW_RIGHT)
+      {
+        movePlayerInClock(false)
+      }
+      
+    })
   }
   
   // initInput();
@@ -123,6 +140,12 @@ function main() {
   function startGame() {
     determineLocationCoords()
     setPlayerInitLoc(COMPASS_DIR.SOUTH)
+    initPlayerInput()
+
+    enemy_1 = new Enemy({
+      x: CANVAS_CENTER.x + 20,
+      y: CANVAS_CENTER.y
+    })
   }
 
   startGame()
@@ -130,12 +153,13 @@ function main() {
   ///////////////////////////////////////////////////////////////////////////////
 
   function gameUpdate() {
-    handlePlayerInput()
     // player.update()
+    enemy_1.update()
   }
 
   function gameRender() {
     player.render()
+    enemy_1.render()
     drawLocations(context)
   }
 

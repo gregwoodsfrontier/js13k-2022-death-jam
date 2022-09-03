@@ -5,7 +5,7 @@ import {
 } from 'kontra'
 
 export class Player extends SpriteClass {
-    constructor(props) {
+    constructor(props: object) {
         let side = 20
 
         super({
@@ -24,24 +24,5 @@ export class Player extends SpriteClass {
         context.beginPath();
         context.arc(0, 0, radius, 0, 2 * Math.PI);
         context.fill();
-    }
-
-    update() {
-        this.defineKeyInputs()
-        this.relocate()
-    }
-
-    defineKeyInputs() {
-        let keyboardDirection = keyPressed('arrowright') - keyPressed('arrowleft');
-        if (keyboardDirection) {
-          this.x += 10 * keyboardDirection
-        }
-    }
-
-    relocate() {
-        let canvas = getCanvas()
-        if (this.x > canvas.width || this.x < 0) {
-            this.x = canvas.width / 2;
-        }
     }
 }
