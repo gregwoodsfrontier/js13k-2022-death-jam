@@ -7,6 +7,7 @@ export class Enemy extends SpriteClass {
     constructor(props: object) {
         super({
             ...props,
+            type: "enemy",
             anchor: {
                 x: 0.5,
                 y: 0.5
@@ -17,7 +18,6 @@ export class Enemy extends SpriteClass {
 
     mov_speed = 5 // Enemy moving speed
     scaling_speed = 0.01 // Enemy scaling speed
-    alive = true
 
     draw() {
         let { context, radius } = this;
@@ -28,25 +28,13 @@ export class Enemy extends SpriteClass {
     }
 
     update() {
-        if(!this.alive)
-        {
-            return
-        }
+        this.travelMethod()
+    }
 
+    travelMethod() {
         this.x += this.mov_speed
         this.scaleX += this.scaling_speed
         this.scaleY += this.scaling_speed
-
-        const canvas = getCanvas()
-
-        if(this.x > canvas.width - this.radius)
-        {
-            this.alive = false
-            this.x = -10
-            this.scaleX = 0
-            this.scaleY = 0
-            this.opacity = 0
-        }
     }
 
 }

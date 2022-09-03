@@ -45,14 +45,11 @@ function main() {
     x: canvas.width / 2,
     y: canvas.height / 2
   }
-
-  let enemy_1: Enemy
-
-
+  
   let location_coords: CoordType[] = []
 
   // let isPlaying   
-  // let entities
+  let entities: Sprite[] = []
 
   ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,6 +62,14 @@ function main() {
       }
       location_coords.push(coords)
     }
+  }
+
+  function createEnemy(posx: number, posy: number) {
+    let enemy = new Enemy({
+      x: posx,
+      y: posy
+    })
+    entities.push(enemy)
   }
 
   /*
@@ -88,12 +93,13 @@ function main() {
 
   }
 
-  function setPlayerInitLoc(loc_num: number) {
+  function createPlayer(loc_num: number) {
     player = new Player({
       x: location_coords[loc_num].x,
       y: location_coords[loc_num].y,
       loc_index: loc_num
     })
+    entities.push(player)
   }
 
   function setPlayerLocation(loc_num: number) {
@@ -139,13 +145,10 @@ function main() {
 
   function startGame() {
     determineLocationCoords()
-    setPlayerInitLoc(COMPASS_DIR.SOUTH)
+    createPlayer(COMPASS_DIR.SOUTH)
     initPlayerInput()
 
-    enemy_1 = new Enemy({
-      x: CANVAS_CENTER.x + 20,
-      y: CANVAS_CENTER.y
-    })
+    createEnemy(CANVAS_CENTER.x + 20, CANVAS_CENTER.y)
   }
 
   startGame()
@@ -153,14 +156,28 @@ function main() {
   ///////////////////////////////////////////////////////////////////////////////
 
   function gameUpdate() {
-    // player.update()
-    enemy_1.update()
+    entities.map(sprite => {
+      sprite.update()
+
+      if(sprite.type === "enemy") {
+        // if the enemy is beyond the right edge
+        if(sprite.x > canvas.width - sprite.radius ||
+           sprite.y > canvas.height - sprite.radius ||
+           sprite.x < -sprite.radius ||
+           sprite.y < -sprite.radius
+        ) {
+          sprite.ttl = 0
+        }
+      }
+    })
+
+    // despawn all dead entities
+    entities = entities.filter(sprite => sprite.isAlive())
   }
 
   function gameRender() {
-    player.render()
-    enemy_1.render()
     drawLocations(context)
+    entities.map(sprite => sprite.render())
   }
 
   ///////////////////////////////////////////////////////////////////////////////
