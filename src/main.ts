@@ -3,11 +3,11 @@ import {
   GameLoop,
   initKeys,
   Sprite,
-  keyPressed,
-  clamp
+  randInt
 } from 'kontra';
 import { Enemy } from './enemy';
 import { Player } from './player';
+import { circleCirCollision } from './utils';
 
 type CoordType = {
   x: number,
@@ -17,13 +17,19 @@ type CoordType = {
 enum COMPASS_DIR {
   EAST,
   SOUTH_EAST,
-  SOUTH
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST,
+  NORTH,
+  NORTH_EAST
 }
 
-const KEY_UP = 'keyup'
 const KEY_DOWN = 'keydown'
 const ARROW_LEFT = "ArrowLeft"
 const ARROW_RIGHT = "ArrowRight"
+
+let timestamp = 0
 
 function main() {
 
@@ -41,11 +47,12 @@ function main() {
   const PATTERN_R = canvas.width * 0.4
   const LOCATION_R = canvas.width * 0.02
   const NUM_OF_LOC = 8
+  const OBJ_SPAWN_R = 30
   const CANVAS_CENTER = {
     x: canvas.width / 2,
     y: canvas.height / 2
   }
-  
+
   let location_coords: CoordType[] = []
 
   // let isPlaying   
@@ -64,10 +71,11 @@ function main() {
     }
   }
 
-  function createEnemy(posx: number, posy: number) {
+  function createEnemy(posx: number, posy: number, dir: number) {
     let enemy = new Enemy({
       x: posx,
-      y: posy
+      y: posy,
+      direction: dir
     })
     entities.push(enemy)
   }
@@ -135,11 +143,22 @@ function main() {
       
     })
   }
-  
-  // initInput();
 
-  // init high score
-  // localStorage[highScoreKey] = localStorage[highScoreKey] || 0;
+  function enemySpawnLoop() {
+    let delay = 500
+    let t_now = new Date()
+    if(t_now.getTime() > timestamp) {
+      let spawn_loc = randInt(0, 7)
+      let angle = spawn_loc * (360 / 8) / 180 * Math.PI
+      createEnemy(
+        CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
+        CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
+        spawn_loc
+      )
+
+      timestamp = Date.now() + delay
+    }
+  }
 
   ///////////////////////////////////////////////////////////////////////////////
 
@@ -148,7 +167,7 @@ function main() {
     createPlayer(COMPASS_DIR.SOUTH)
     initPlayerInput()
 
-    createEnemy(CANVAS_CENTER.x + 20, CANVAS_CENTER.y)
+    // createEnemy(CANVAS_CENTER.x + 20, CANVAS_CENTER.y)
   }
 
   startGame()
@@ -156,6 +175,8 @@ function main() {
   ///////////////////////////////////////////////////////////////////////////////
 
   function gameUpdate() {
+    enemySpawnLoop()
+
     entities.map(sprite => {
       sprite.update()
 
@@ -167,6 +188,29 @@ function main() {
            sprite.y < -sprite.radius
         ) {
           sprite.ttl = 0
+        }
+      }
+
+      // collision detection
+      for (let i = 0; i < entities.length; i++) {
+
+        // check enemy and player collision
+        if (entities[i].type === 'enemy') {
+          for (let j = 0; j < entities.length; j++) {
+            if(entities[j].type === 'player' && i !== j) {
+              let enemy = entities[i]
+              let player = entities[j]
+              if(circleCirCollision(enemy, player)) {
+                enemy.ttl = 0
+                console.log('enemy collides with player')
+                // console.log(`enemy radius: ${enemy.radius}`)
+                // console.log(`enemy scaleX: ${enemy.scaleX}`)
+                break
+              }
+            }
+
+            entities = entities.filter(sprite => sprite.isAlive())
+          }
         }
       }
     })

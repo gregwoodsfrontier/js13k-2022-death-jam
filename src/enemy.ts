@@ -17,7 +17,7 @@ export class Enemy extends SpriteClass {
     }
 
     mov_speed = 5 // Enemy moving speed
-    scaling_speed = 0.01 // Enemy scaling speed
+    scaling_speed = 0.02 // Enemy scaling speed
 
     draw() {
         let { context, radius } = this;
@@ -32,9 +32,21 @@ export class Enemy extends SpriteClass {
     }
 
     travelMethod() {
-        this.x += this.mov_speed
+        if(this.direction === undefined || typeof this.direction !== 'number')
+        {
+            return
+        }
+
+        let angle = this.direction * (360 / 8) / 180 * Math.PI
+
+        this.x += this.mov_speed * Math.cos(angle)
+        this.y += this.mov_speed * Math.sin(angle)
+
         this.scaleX += this.scaling_speed
         this.scaleY += this.scaling_speed
+
+        // update radius
+        // this.radius = this.radius * this.scaleX
     }
 
 }

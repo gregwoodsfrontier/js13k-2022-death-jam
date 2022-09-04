@@ -1,7 +1,8 @@
 import {
   getContext,
   clamp,
-  getWorldRect
+  getWorldRect,
+  Sprite
 } from 'kontra';
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -15,6 +16,20 @@ export function drawPixelFill(context: CanvasRenderingContext2D, x: number, y: n
   context.fillRect(roundedX, roundedY, 1, 1);
 }
 
+/**
+ * Determine if a circle and a circle collide
+*/
+export function circleCirCollision(circle1: Sprite, circle2: Sprite) {
+  if(!circle1.radius || !circle2.radius)
+  {
+    return
+  }
+  let dx = circle2.x - circle1.x
+  let dy = circle2.y - circle1.y
+  let cirAfterScaleR = [circle1.radius * circle1.scaleX, circle2.radius * circle2.scaleX]
+
+  return Math.hypot(dx, dy) < cirAfterScaleR[0] + cirAfterScaleR[1]
+}
 
 /**
  * Draw a rounded rectangle
