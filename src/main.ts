@@ -29,8 +29,6 @@ const KEY_DOWN = 'keydown'
 const ARROW_LEFT = "ArrowLeft"
 const ARROW_RIGHT = "ArrowRight"
 
-let timestamp = 0
-
 function main() {
 
   // globals
@@ -41,6 +39,8 @@ function main() {
   let { canvas, context } = init();
   canvas.width = 680
   canvas.height = 680
+
+  let timestamp = 0
 
   let player: Player;
 
@@ -55,7 +55,10 @@ function main() {
 
   let location_coords: CoordType[] = []
 
-  // let isPlaying   
+  let isPlaying = true
+  
+  let score = 0
+  
   let entities: Sprite[] = []
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -168,8 +171,6 @@ function main() {
     determineLocationCoords()
     createPlayer(COMPASS_DIR.SOUTH)
     initPlayerInput()
-
-    
   }
 
   startGame()
