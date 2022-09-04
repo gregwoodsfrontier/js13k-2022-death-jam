@@ -64,8 +64,8 @@ function main() {
     text: `${score}`,
     font: '77px Arial',
     color: 'white',
-    x: 154,
-    y: 111,
+    x: 100,
+    y: 50,
     anchor: {x: 0.5, y: 0.5}
   });
   
@@ -214,6 +214,9 @@ function main() {
               let enemy = entities[i]
               let player = entities[j]
               if(circleCirCollision(enemy, player)) {
+                // remove the enemy from array so it wont be check again
+                entities.splice(i, 1)
+                // destroy that enemy
                 enemy.ttl = 0
                 console.log('enemy collides with player')
                 // console.log(`enemy radius: ${enemy.radius}`)
@@ -222,7 +225,7 @@ function main() {
               }
             }
 
-            entities = entities.filter(sprite => sprite.isAlive())
+            // entities = entities.filter(sprite => sprite.isAlive())
           }
         }
       }
@@ -235,6 +238,10 @@ function main() {
   function gameRender() {
     drawLocations(context)
     entities.map(sprite => sprite.render())
+
+    // draw score
+    scoreText.text = `${score}`
+    scoreText.render()
   }
 
   ///////////////////////////////////////////////////////////////////////////////

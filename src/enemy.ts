@@ -13,6 +13,7 @@ export class Enemy extends SpriteClass {
                 y: 0.5
             },
             radius: 15,
+            opacity: 0.75
         })
     }
 
