@@ -166,24 +166,10 @@ function main() {
       {
         movePlayerInClock(false)
       }
-      
+      else if (event.key === "d") {
+        
+      }
     })
-  }
-
-  function enemySpawnLoop() {
-    let delay = 500
-    let t_now = new Date()
-    if(t_now.getTime() > timestamp) {
-      let spawn_loc = player.direction + randInt(-1, 1)
-      let angle = spawn_loc * (360 / 8) / 180 * Math.PI
-      createEnemy(
-        CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
-        CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
-        spawn_loc
-      )
-
-      timestamp = Date.now() + delay
-    }
   }
 
   function gameObjectSpawnLoop(type: string) {
@@ -251,7 +237,7 @@ function main() {
   ///////////////////////////////////////////////////////////////////////////////
 
   function gameUpdate() {
-    gameObjectSpawnLoop('coin')
+    // gameObjectSpawnLoop('coin')
 
 
     entities.map(sprite => {
