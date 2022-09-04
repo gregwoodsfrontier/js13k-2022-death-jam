@@ -169,7 +169,7 @@ function main() {
     createPlayer(COMPASS_DIR.SOUTH)
     initPlayerInput()
 
-    // createEnemy(CANVAS_CENTER.x + 20, CANVAS_CENTER.y)
+    
   }
 
   startGame()
