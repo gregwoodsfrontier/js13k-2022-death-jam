@@ -6,6 +6,7 @@ import {
   randInt,
   Text
 } from 'kontra';
+import { Coin } from './coin';
 import { Enemy } from './enemy';
 import { Player } from './player';
 import { circleCirCollision } from './utils';
@@ -38,8 +39,8 @@ function main() {
   initKeys()
 
   let { canvas, context } = init();
-  canvas.width = 680
-  canvas.height = 680
+  canvas.width = 640
+  canvas.height = 640
 
   let timestamp = 0
 
@@ -53,6 +54,7 @@ function main() {
     x: canvas.width / 2,
     y: canvas.height / 2
   }
+  const COIN_SCORE = 50
 
   let location_coords: CoordType[] = []
 
@@ -91,6 +93,15 @@ function main() {
       direction: dir
     })
     entities.push(enemy)
+  }
+
+  function createCoin(posx: number, posy: number, dir: number) {
+    let coin = new Coin({
+      x: posx,
+      y: posy,
+      direction: dir
+    })
+    entities.push(coin)
   }
 
   /*
@@ -175,7 +186,59 @@ function main() {
     }
   }
 
+  function gameObjectSpawnLoop(type: string) {
+    let delay = 500
+    let t_now = new Date()
+    if(t_now.getTime() > timestamp) {
+      let spawn_loc = player.direction + randInt(-1, 1)
+      let angle = spawn_loc * (360 / 8) / 180 * Math.PI
+      
+      switch (type) {
+        case 'enemy': {
+          createEnemy(
+            CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
+            CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
+            spawn_loc
+          )
+          break
+        }
+
+        case 'coin': {
+          createCoin(
+            CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
+            CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
+            spawn_loc
+          )
+          break
+        }
+
+        default: {
+          break
+        }
+      }
+
+      timestamp = Date.now() + delay
+    }
+  }
+
+  function checkOutOfBounds(spr: Sprite) {
+    return spr.x > canvas.width - spr.radius ||
+    spr.y > canvas.height - spr.radius ||
+    spr.x < -spr.radius ||
+    spr.y < -spr.radius
+  }
+
+  function changeScore(chng: number) {
+    score += chng
+  }
+
   ///////////////////////////////////////////////////////////////////////////////
+
+  function renderUI() {
+    // draw score
+    scoreText.text = `${score}`
+    scoreText.render()
+  }
 
   function startGame() {
     determineLocationCoords()
@@ -188,24 +251,19 @@ function main() {
   ///////////////////////////////////////////////////////////////////////////////
 
   function gameUpdate() {
-    enemySpawnLoop()
+    gameObjectSpawnLoop('coin')
+
 
     entities.map(sprite => {
       sprite.update()
 
-      if(sprite.type === "enemy") {
-        // if the enemy is beyond the right edge
-        if(sprite.x > canvas.width - sprite.radius ||
-           sprite.y > canvas.height - sprite.radius ||
-           sprite.x < -sprite.radius ||
-           sprite.y < -sprite.radius
-        ) {
-          sprite.ttl = 0
-        }
-      }
-
       // collision detection
       for (let i = 0; i < entities.length; i++) {
+
+        if(checkOutOfBounds(entities[i])) {
+          entities.splice(i, 1)
+          entities[i].ttl = 0
+        }
 
         // check enemy and player collision
         if (entities[i].type === 'enemy') {
@@ -224,8 +282,22 @@ function main() {
                 break
               }
             }
-
-            // entities = entities.filter(sprite => sprite.isAlive())
+          }
+        }
+        // check coin and player collision
+        else if (entities[i].type === 'coin') {
+          for (let k = 0; k < entities.length; k++) {
+            if(entities[k].type === 'player' && i !== k) {
+              let coin = entities[i]
+              let player = entities[k]
+              if(circleCirCollision(coin, player)) {
+                entities.splice(i, 1)
+                coin.ttl = 0
+                changeScore(COIN_SCORE)
+                break
+              }
+            }
+            
           }
         }
       }
@@ -239,9 +311,7 @@ function main() {
     drawLocations(context)
     entities.map(sprite => sprite.render())
 
-    // draw score
-    scoreText.text = `${score}`
-    scoreText.render()
+    renderUI()
   }
 
   ///////////////////////////////////////////////////////////////////////////////

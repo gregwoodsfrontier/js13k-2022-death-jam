@@ -12,8 +12,7 @@ export class Coin extends SpriteClass {
                 x: 0.5,
                 y: 0.5
             },
-            radius: 15,
-            direction: 0
+            radius: 15
         })
     }
 
@@ -29,7 +28,7 @@ export class Coin extends SpriteClass {
     }
 
     update() {
-        this.travelS()
+        this.travel()
     }
 
     travel() {
@@ -48,10 +47,6 @@ export class Coin extends SpriteClass {
 
         // update radius
         // this.radius = this.radius * this.scaleX
-    }
-
-    onCollision() {
-        console.log(" game score increases ")
     }
 
 }
