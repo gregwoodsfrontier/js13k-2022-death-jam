@@ -105,7 +105,8 @@ function main() {
     player = new Player({
       x: location_coords[loc_num].x,
       y: location_coords[loc_num].y,
-      loc_index: loc_num
+      loc_index: loc_num,
+      direction: COMPASS_DIR.SOUTH
     })
     entities.push(player)
   }
@@ -113,6 +114,7 @@ function main() {
   function setPlayerLocation(loc_num: number) {
     player.x = location_coords[loc_num].x
     player.y = location_coords[loc_num].y
+    player.direction = loc_num
   }
 
   function movePlayerInClock(isClock: boolean)
@@ -148,7 +150,7 @@ function main() {
     let delay = 500
     let t_now = new Date()
     if(t_now.getTime() > timestamp) {
-      let spawn_loc = randInt(0, 7)
+      let spawn_loc = player.direction + randInt(-1, 1)
       let angle = spawn_loc * (360 / 8) / 180 * Math.PI
       createEnemy(
         CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
