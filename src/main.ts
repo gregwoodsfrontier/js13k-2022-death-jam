@@ -3,7 +3,8 @@ import {
   GameLoop,
   initKeys,
   Sprite,
-  randInt
+  randInt,
+  Text
 } from 'kontra';
 import { Enemy } from './enemy';
 import { Player } from './player';
@@ -58,6 +59,15 @@ function main() {
   let isPlaying = true
   
   let score = 0
+
+  let scoreText = Text({
+    text: `${score}`,
+    font: '77px Arial',
+    color: 'white',
+    x: 154,
+    y: 111,
+    anchor: {x: 0.5, y: 0.5}
+  });
   
   let entities: Sprite[] = []
 
