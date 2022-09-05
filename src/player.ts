@@ -38,8 +38,8 @@ export class Player extends SpriteClass {
         let c = getContext()
         let C = COLOR_DATA
         let px = [] as number[]
-        for (let k = 0; k < ENCRYPT_DATA.length; k++) {
-            let z = ENCRYPT_DATA.charCodeAt(k)
+        for (let a of ENCRYPT_DATA) {
+            let z = a.charCodeAt(0)
             px.push(z & 7)
             px.push((z >> 3) & 7)
         }
