@@ -22,9 +22,15 @@ class Controls {
         case 'KeyA':
           this.isLeft = isPressed;
           break;
+        case 'ArrowLeft':
+            this.isLeft = isPressed;
+            break;
         case 'KeyD':
           this.isRight = isPressed;
           break;
+        case 'ArrowRight':
+            this.isRight = isPressed;
+            break;
         case 'Enter':
           this.isEnter = isPressed;
           break;
