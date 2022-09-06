@@ -5,6 +5,7 @@ import {
     getContext
 } from 'kontra'
 import { PLAYER_DATA } from './player_data'
+import { drawCharacter } from './utils'
 
 export class Player extends SpriteClass {
     constructor(props: object) {
@@ -17,40 +18,35 @@ export class Player extends SpriteClass {
             },
             radius: 11
         })
-
-        window.addEventListener('keydown', (event) => {
-            if(event.key === 'a')
-            {
-                this.rotation += Math.PI/4
-                // if(this.state === 'idle') {
-                //     this.clearSprite()
-                //     this.state = 'left'
-                // }
-                // else if(this.state === 'left') {
-                //     this.clearSprite()
-                //     this.state = 'idle'
-                // }
-                
-            }
-        })
     }
 
     width = 0
     height = 0
     state = 'idle'
+    context = getContext()
 
     draw() {
-        if(this.state === 'idle')
-        {
-            this.drawCharacter(PLAYER_DATA.color, PLAYER_DATA.idle.encrypt, PLAYER_DATA.idle.width, PLAYER_DATA.idle.height)
-        }
-        else if(this.state === 'left')
-        {
-            this.drawCharacter(PLAYER_DATA.color, PLAYER_DATA.left.encrypt, PLAYER_DATA.left.width, PLAYER_DATA.left.height)
+
+        switch (this.state) {
+            case 'idle': {
+                drawCharacter(this.context, PLAYER_DATA.color, PLAYER_DATA.idle.encrypt, PLAYER_DATA.idle.width, PLAYER_DATA.idle.height)
+                this.setScale(4, 4)
+                break
+            }
+            case 'left': {
+                drawCharacter(this.context, PLAYER_DATA.color, PLAYER_DATA.left.encrypt, PLAYER_DATA.left.width, PLAYER_DATA.left.height)
+                this.setScale(4, 4)
+                break
+            }
+            case 'right': {
+                drawCharacter(this.context, PLAYER_DATA.color, PLAYER_DATA.left.encrypt, PLAYER_DATA.left.width, PLAYER_DATA.left.height)
+                this.setScale(-4, 4)
+                break
+            }
         }
 
         this.drawCollisionCircle()
-        this.setScale(4, 4)
+        
         // console.log(this.width, this.height)
     }
 
@@ -75,33 +71,5 @@ export class Player extends SpriteClass {
         c.clearRect(crop_loc.x, crop_loc.y, actual_size.w, actual_size.h)
     }
 
-    drawCharacter(color_data: string, frame_data: string, _width: number, _height: number) {
-        let c = getContext()
-        let C = color_data
-        let px = [] as number[]
-        for (let a of frame_data) {
-            let z = a.charCodeAt(0)
-            px.push(z & 7)
-            px.push((z >> 3) & 7)
-        }
-        let W = _width
-        let H = _height
-        this.width = W
-        this.height = H
-        for (let j = 0; j < H; j++) {
-            for (let i = 0; i < W; i++) {
-                if (px[j * W + i]) {
-                    // c.fillStyle = "#" + C.substr(6 * (px[j * W + i] - 1), 6)
-                    let start = 6 * (px[j * W + i] - 1)
-                    let end = start + 6
-                    let pos = {
-                        x: i - Math.floor(W/2),
-                        y: j - Math.floor(H/2)
-                    }
-                    c.fillStyle = "#" + C.slice(start, end)
-                    c.fillRect(pos.x , pos.y , 1, 1)
-                }
-            }
-        }
-    }
+    
 }
