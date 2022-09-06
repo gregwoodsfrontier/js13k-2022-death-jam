@@ -5,14 +5,35 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@ampproject/rollup-plugin-closure-compiler": "0.27.0",
+    "@rollup/plugin-typescript": "8.3.3",
+    "@types/clean-css": "4.2.5",
+    "@types/google-closure-compiler": "0.0.19",
+    "@types/html-minifier-terser": "6.1.0",
+    "clean-css": "5.3.1",
+    "google-closure-compiler": "20220601.0.0",
+    "ect-bin": "1.4.1",
+    "eslint": "8.20.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "html-minifier-terser": "6.1.0",
+    "prettier": "2.7.1",
+    "roadroller": "2.1.0",
+    "ts-node": "10.9.1",
+    "tslib": "2.4.0",
+    "typescript": "4.7.4",
     "vite": "^3.0.7"
   },
   "dependencies": {
     "kontra": "^8.0.0",
     "tsc": "^2.0.4"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true
   }
 }
