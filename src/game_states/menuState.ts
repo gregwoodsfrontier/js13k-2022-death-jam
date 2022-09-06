@@ -19,13 +19,20 @@ class MenuState implements IState {
         onInput(['enter', 'space'], this.handleInput)
     }
 
+    onUpdate() {
+
+    }
+
     onRender() {
+        // this.drawMenu();
+        // onInput(['enter', 'space'], this.handleInput)
+
         if(this.getGameOver === true) {
             this.titleText.text = 'Game Over ?'
             this.mainText.text = 'Press Enter to re-play'
         }
         else if(this.getGameOver === false) {
-            this.titleText.text = 'Echo of Depths (Death)'
+            this.titleText.text = 'Echo of Depths / Death'
             this.mainText.text = 'Press Enter to play'
         }
 
@@ -44,8 +51,8 @@ class MenuState implements IState {
     drawMenu() {
         let canvas = getCanvas()
         this.titleText = Text({
-            text: '',
-            font: '154px Arial',
+            text: 'a',
+            font: '44px Arial',
             color: 'white',
             x: canvas.width / 2,
             y: canvas.height / 2 - 76,
@@ -53,8 +60,8 @@ class MenuState implements IState {
         })
 
         this.mainText = Text({
-            text: '',
-            font: '130px Arial',
+            text: 'b',
+            font: '30px Arial',
             color: 'white',
             x: canvas.width / 2,
             y: canvas.height / 2 + 0,

@@ -8,6 +8,8 @@ import {
 } from 'kontra';
 import { Coin } from './coin';
 import { Enemy } from './enemy';
+import { menuState } from './game_states/menuState';
+import { createGameStateMachine, gameStateMachine } from './game_state_machine';
 import { Player } from './player';
 import { circleCirCollision } from './utils';
 
@@ -226,19 +228,20 @@ function main() {
     scoreText.render()
   }
 
-  function startGame() {
-    determineLocationCoords()
-    createPlayer(COMPASS_DIR.SOUTH)
-    initPlayerInput()
-  }
+  // function startGame() {
+  //   determineLocationCoords()
+  //   createPlayer(COMPASS_DIR.SOUTH)
+  //   initPlayerInput()
+  // }
 
-  startGame()
+  // startGame()
+
+  createGameStateMachine(menuState)
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  function gameUpdate() {
+  function updateMethodV1() {
     // gameObjectSpawnLoop('coin')
-
 
     entities.map(sprite => {
       sprite.update()
@@ -293,11 +296,17 @@ function main() {
     entities = entities.filter(sprite => sprite.isAlive())
   }
 
-  function gameRender() {
-    drawLocations(context)
-    entities.map(sprite => sprite.render())
+  function gameUpdate() {
+    gameStateMachine.getState().onUpdate()
+  }
 
-    renderUI()
+  function gameRender() {
+    // drawLocations(context)
+    // entities.map(sprite => sprite.render())
+
+    // renderUI()
+
+    gameStateMachine.getState().onRender()
   }
 
   ///////////////////////////////////////////////////////////////////////////////

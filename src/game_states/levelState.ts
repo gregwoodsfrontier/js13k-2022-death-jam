@@ -9,6 +9,10 @@ class LevelState implements IState {
         console.log('Level state on Update')
         // put your game logic here
     }
+
+    onRender () {
+        
+    }
 }
 
 export const levelState = new LevelState()
