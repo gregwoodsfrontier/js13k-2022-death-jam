@@ -1,7 +1,5 @@
 import {
     SpriteClass,
-    keyPressed,
-    getCanvas,
     getContext
 } from 'kontra'
 import { PLAYER_DATA } from './player_data'

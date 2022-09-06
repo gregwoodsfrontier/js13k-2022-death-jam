@@ -4,13 +4,15 @@ import { execFileSync } from 'child_process';
 import CleanCSS from 'clean-css';
 import ect from 'ect-bin';
 import fs, { statSync } from 'fs';
-import { CompileOptions, compiler as ClosureCompiler } from 'google-closure-compiler';
+import { CompileOptions } from 'google-closure-compiler';
 import htmlMinify from 'html-minifier-terser';
 import path from 'path';
 import { Input, InputAction, InputType, Packer } from 'roadroller';
 import { OutputAsset, OutputChunk, OutputOptions, RenderedChunk } from 'rollup';
 import { ECMA } from 'terser';
 import { defineConfig, IndexHtmlTransformContext, Plugin, PluginOption } from 'vite';
+import pkg from 'google-closure-compiler';
+const { compiler: ClosureCompiler } = pkg;
 
 // Use this setting to control the TypeScript compiler
 // ESBuild is built in with Vite, and runs very fast.
@@ -30,8 +32,8 @@ const VITE_MINIFY = process.env['VITE_MINIFY'] || 'terser'; // 'terser', 'esbuil
 // 1) "closure" - Calls Google Closure Compiler directly.
 // 2) "amp" - Uses the AMP Project wrapper.  This provides slightly better results, but is more picky about syntax errors.
 // 3) "none" - Useful for debugging.
-// const CLOSURE_COMPILER = process.env['CLOSURE_COMPILER'] || 'closure'; // 'closure', 'amp', or 'none'
 const CLOSURE_COMPILER = process.env['CLOSURE_COMPILER'] || 'none'; // 'closure', 'amp', or 'none'
+// const CLOSURE_COMPILER = process.env['CLOSURE_COMPILER'] || 'none'; // 'closure', 'amp', or 'none'
 
 export default defineConfig(({ command, mode }) => {
   if (command !== 'build') {

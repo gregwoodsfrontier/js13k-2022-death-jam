@@ -1,7 +1,4 @@
 import {
-  getContext,
-  clamp,
-  getWorldRect,
   Sprite
 } from 'kontra';
 
