@@ -169,70 +169,15 @@ function main() {
       {
         movePlayerInClock(false)
       }
-      else if (event.key === "d") {
-        
-      }
     })
-  }
-
-  function gameObjectSpawnLoop(type: string) {
-    let delay = 500
-    let t_now = new Date()
-    if(t_now.getTime() > timestamp) {
-      let spawn_loc = player.direction + randInt(-1, 1)
-      let angle = spawn_loc * (360 / 8) / 180 * Math.PI
-      
-      switch (type) {
-        case 'enemy': {
-          createEnemy(
-            CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
-            CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
-            spawn_loc
-          )
-          break
-        }
-
-        case 'coin': {
-          createCoin(
-            CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
-            CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
-            spawn_loc
-          )
-          break
-        }
-
-        default: {
-          break
-        }
-      }
-
-      timestamp = Date.now() + delay
-    }
-  }
-
-  function checkOutOfBounds(spr: Sprite) {
-    return spr.x > canvas.width - spr.radius ||
-    spr.y > canvas.height - spr.radius ||
-    spr.x < -spr.radius ||
-    spr.y < -spr.radius
-  }
-
-  function changeScore(chng: number) {
-    score += chng
   }
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  function renderUI() {
-    // draw score
-    scoreText.text = `${score}`
-    scoreText.render()
-  }
-
   // function startGame() {
   //   determineLocationCoords()
   //   createPlayer(COMPASS_DIR.SOUTH)
-  //   initPlayerInput()
+    initPlayerInput()
   // }
 
   // startGame()
@@ -246,72 +191,11 @@ function main() {
     gameStateMachine.setState(levelState)
   }
 
-  function updateMethodV1() {
-    // gameObjectSpawnLoop('coin')
-
-    entities.map(sprite => {
-      sprite.update()
-
-      // collision detection
-      for (let i = 0; i < entities.length; i++) {
-
-        if(checkOutOfBounds(entities[i])) {
-          entities.splice(i, 1)
-          entities[i].ttl = 0
-        }
-
-        // check enemy and player collision
-        if (entities[i].type === 'enemy') {
-          for (let j = 0; j < entities.length; j++) {
-            if(entities[j].type === 'player' && i !== j) {
-              let enemy = entities[i]
-              let player = entities[j]
-              if(circleCirCollision(enemy, player)) {
-                // remove the enemy from array so it wont be check again
-                entities.splice(i, 1)
-                // destroy that enemy
-                enemy.ttl = 0
-                console.log('enemy collides with player')
-                // console.log(`enemy radius: ${enemy.radius}`)
-                // console.log(`enemy scaleX: ${enemy.scaleX}`)
-                break
-              }
-            }
-          }
-        }
-        // check coin and player collision
-        else if (entities[i].type === 'coin') {
-          for (let k = 0; k < entities.length; k++) {
-            if(entities[k].type === 'player' && i !== k) {
-              let coin = entities[i]
-              let player = entities[k]
-              if(circleCirCollision(coin, player)) {
-                entities.splice(i, 1)
-                coin.ttl = 0
-                changeScore(COIN_SCORE)
-                break
-              }
-            }
-            
-          }
-        }
-      }
-    })
-
-    // despawn all dead entities
-    entities = entities.filter(sprite => sprite.isAlive())
-  }
-
   function gameUpdate() {
     gameStateMachine.getState().onUpdate()
   }
 
   function gameRender() {
-    // drawLocations(context)
-    // entities.map(sprite => sprite.render())
-
-    // renderUI()
-
     gameStateMachine.getState().onRender()
   }
 
