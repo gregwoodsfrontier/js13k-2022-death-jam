@@ -5,7 +5,19 @@ import {
 import { PLAYER_DATA } from './player_data'
 import { drawCharacter } from './utils'
 
-export class Player extends SpriteClass {
+export interface IPlayer {
+    type: string,
+    anchor: {
+        x: number,
+        y: number
+    },
+    radius: number,
+    x: number,
+    y: number,
+    direction: number
+}
+
+export class Player extends SpriteClass implements IPlayer {
     constructor(props: object) {
         super({
             ...props,
@@ -17,6 +29,10 @@ export class Player extends SpriteClass {
             radius: 11
         })
     }
+
+    type = "player"
+    radius = 11
+    direction = 2
 
     width = 0
     height = 0
@@ -44,6 +60,8 @@ export class Player extends SpriteClass {
         }
 
         this.drawCollisionCircle()
+
+        this.rotation = -Math.PI / 4 * this.direction + Math.PI / 2
         
         // console.log(this.width, this.height)
     }

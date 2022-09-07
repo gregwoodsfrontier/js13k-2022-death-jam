@@ -12,26 +12,25 @@ import { menuState } from './game_states/menuState';
 import { createGameStateMachine, gameStateMachine } from './game_state_machine';
 import { Player } from './player';
 import { circleCirCollision } from './utils';
+import { COMPASS_DIR } from './compassDir';
+import { levelState } from './game_states/levelState';
 
 type CoordType = {
   x: number,
   y: number
 }
 
-enum COMPASS_DIR {
-  EAST,
-  SOUTH_EAST,
-  SOUTH,
-  SOUTH_WEST,
-  WEST,
-  NORTH_WEST,
-  NORTH,
-  NORTH_EAST
-}
+// const { canvas, context } = init();
 
+
+const NUM_OF_LOC = 8
+const OBJ_SPAWN_R = 30
+
+const COIN_SCORE = 50
 const KEY_DOWN = 'keydown'
 const ARROW_LEFT = "ArrowLeft"
 const ARROW_RIGHT = "ArrowRight"
+
 
 function main() {
 
@@ -41,22 +40,23 @@ function main() {
   initKeys()
 
   let { canvas, context } = init();
+
   canvas.width = 640
   canvas.height = 640
+
+  const CANVAS_CENTER = {
+    x: canvas.width / 2,
+    y: canvas.height / 2
+  }
+
+  const PATTERN_R = canvas.width * 0.4
+  const LOCATION_R = canvas.width * 0.02
 
   let timestamp = 0
 
   let player: Player;
 
-  const PATTERN_R = canvas.width * 0.4
-  const LOCATION_R = canvas.width * 0.02
-  const NUM_OF_LOC = 8
-  const OBJ_SPAWN_R = 30
-  const CANVAS_CENTER = {
-    x: canvas.width / 2,
-    y: canvas.height / 2
-  }
-  const COIN_SCORE = 50
+  
 
   let location_coords: CoordType[] = []
 
@@ -132,7 +132,7 @@ function main() {
       x: location_coords[loc_num].x,
       y: location_coords[loc_num].y,
       loc_index: loc_num,
-      direction: COMPASS_DIR.SOUTH
+      direction: loc_num
     })
     entities.push(player)
   }
@@ -237,8 +237,13 @@ function main() {
   // startGame()
 
   createGameStateMachine(menuState)
+  // testMethod()
 
   ///////////////////////////////////////////////////////////////////////////////
+
+  function testMethod() {
+    gameStateMachine.setState(levelState)
+  }
 
   function updateMethodV1() {
     // gameObjectSpawnLoop('coin')
