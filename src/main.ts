@@ -4,7 +4,8 @@ import {
   initKeys,
   Sprite,
   randInt,
-  Text
+  Text,
+  getCanvas
 } from 'kontra';
 import { Coin } from './coin';
 import { Enemy } from './enemy';
@@ -44,67 +45,67 @@ function main() {
   canvas.width = 640
   canvas.height = 640
 
-  const CANVAS_CENTER = {
-    x: canvas.width / 2,
-    y: canvas.height / 2
-  }
+  // const CANVAS_CENTER = {
+  //   x: canvas.width / 2,
+  //   y: canvas.height / 2
+  // }
 
-  const PATTERN_R = canvas.width * 0.4
-  const LOCATION_R = canvas.width * 0.02
+  // const PATTERN_R = canvas.width * 0.4
+  // const LOCATION_R = canvas.width * 0.02
 
-  let timestamp = 0
+  // let timestamp = 0
 
-  let player: Player;
+  // let player: Player;
 
   
 
-  let location_coords: CoordType[] = []
+  // let location_coords: CoordType[] = []
 
-  let isPlaying = true
+  // let isPlaying = true
   
-  let score = 0
+  // let score = 0
 
-  let scoreText = Text({
-    text: `${score}`,
-    font: '77px Arial',
-    color: 'white',
-    x: 100,
-    y: 50,
-    anchor: {x: 0.5, y: 0.5}
-  });
+  // let scoreText = Text({
+  //   text: `${score}`,
+  //   font: '77px Arial',
+  //   color: 'white',
+  //   x: 100,
+  //   y: 50,
+  //   anchor: {x: 0.5, y: 0.5}
+  // });
   
-  let entities: Sprite[] = []
+  // let entities: Sprite[] = []
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  function determineLocationCoords() {
-    for (let i = 0; i < NUM_OF_LOC; i++) {
-      let angle = i * (360 / 8) / 180 * Math.PI
-      let coords = {
-        x: CANVAS_CENTER.x + Math.cos(angle) * PATTERN_R,
-        y: CANVAS_CENTER.y + Math.sin(angle) * PATTERN_R
-      }
-      location_coords.push(coords)
-    }
-  }
+  // function determineLocationCoords() {
+  //   for (let i = 0; i < NUM_OF_LOC; i++) {
+  //     let angle = i * (360 / 8) / 180 * Math.PI
+  //     let coords = {
+  //       x: CANVAS_CENTER.x + Math.cos(angle) * PATTERN_R,
+  //       y: CANVAS_CENTER.y + Math.sin(angle) * PATTERN_R
+  //     }
+  //     location_coords.push(coords)
+  //   }
+  // }
 
-  function createEnemy(posx: number, posy: number, dir: number) {
-    let enemy = new Enemy({
-      x: posx,
-      y: posy,
-      direction: dir
-    })
-    entities.push(enemy)
-  }
+  // function createEnemy(posx: number, posy: number, dir: number) {
+  //   let enemy = new Enemy({
+  //     x: posx,
+  //     y: posy,
+  //     direction: dir
+  //   })
+  //   entities.push(enemy)
+  // }
 
-  function createCoin(posx: number, posy: number, dir: number) {
-    let coin = new Coin({
-      x: posx,
-      y: posy,
-      direction: dir
-    })
-    entities.push(coin)
-  }
+  // function createCoin(posx: number, posy: number, dir: number) {
+  //   let coin = new Coin({
+  //     x: posx,
+  //     y: posy,
+  //     direction: dir
+  //   })
+  //   entities.push(coin)
+  // }
 
   /*
     This is to draw circles so that the player would know what is their next location.

@@ -25,10 +25,7 @@ const PATTERN_R = canvas.width * 0.4
 const LOCATION_R = canvas.width * 0.02
 const NUM_OF_LOC = 8
 const OBJ_SPAWN_R = 30
-const CANVAS_CENTER = {
-    x: canvas.width / 2,
-    y: canvas.height / 2
-}
+
 const COIN_SCORE = 50
 const KEY_DOWN = 'keydown'
 const ARROW_LEFT = "ArrowLeft"
@@ -42,13 +39,19 @@ type CoordType = {
 
 
 class LevelState implements IState {
-    scoreText!: Text
-    score = 0
-    entities: Sprite[] = []
-    location_coords: CoordType[] = []
+    private canvas = getCanvas()
+    private scoreText!: Text
+    private score = 0
+    private entities: Sprite[] = []
+    private location_coords: CoordType[] = []
+    private CANVAS_CENTER = {
+        x: this.canvas.width / 2,
+        y: this.canvas.height / 2
+    }
+    private PATTERN_R = this.canvas.width * 0.4
+    private LOCATION_R = this.canvas.width * 0.02  
 
     onEnter () {
-        initKeys()
         this.createScoreText()
         this.determineLocationCoords()
     }
@@ -60,6 +63,13 @@ class LevelState implements IState {
 
     onRender () {
         this.drawLocations(getContext())
+        this.renderUI()
+    }
+
+    renderUI() {
+        let {scoreText, score} = this
+        scoreText.text = `${score}`
+        scoreText.render()
     }
 
     createScoreText() {
@@ -77,8 +87,8 @@ class LevelState implements IState {
         for (let i = 0; i < NUM_OF_LOC; i++) {
             let angle = i * (360 / 8) / 180 * Math.PI
             let coords = {
-                x: CANVAS_CENTER.x + Math.cos(angle) * PATTERN_R,
-                y: CANVAS_CENTER.y + Math.sin(angle) * PATTERN_R
+                x: this.CANVAS_CENTER.x + Math.cos(angle) * PATTERN_R,
+                y: this.CANVAS_CENTER.y + Math.sin(angle) * PATTERN_R
             }
             this.location_coords.push(coords)
         }
@@ -88,14 +98,24 @@ class LevelState implements IState {
         let player = new Player({
             x: this.location_coords[loc_num].x,
             y: this.location_coords[loc_num].y,
-            loc_index: loc_num,
             direction: loc_num
         })
+        player.x = this.location_coords[loc_num].x
+        player.y = this.location_coords[loc_num].y
+        player.direction = loc_num
+        
         this.entities.push(player)
     }
 
-    createEnemy() {
-
+    createEnemy(_dir: number) {
+        let angle = _dir * (360 / 8) / 180 * Math.PI
+        
+        let enemy = new Enemy({
+            x: this.CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
+            y: this.CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
+        })
+        enemy.setDirection = _dir
+        this.entities.push(enemy)
     }
 
     createCoin() {

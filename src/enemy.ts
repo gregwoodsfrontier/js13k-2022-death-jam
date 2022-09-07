@@ -1,24 +1,35 @@
 import {
-    getCanvas,
+    clamp,
     SpriteClass
 } from 'kontra'
+import { ICharacter } from './characterType'
 
-export class Enemy extends SpriteClass {
+export class Enemy extends SpriteClass implements ICharacter{
     constructor(props: object) {
         super({
             ...props,
-            type: "enemy",
             anchor: {
                 x: 0.5,
                 y: 0.5
             },
-            radius: 15,
             opacity: 0.75
         })
     }
 
+    direction = 0
+    type = "enemy"
+    radius = 15
+
     mov_speed = 5 // Enemy moving speed
     scaling_speed = 0.02 // Enemy scaling speed
+
+    set setDirection(_dir: number) {
+        this.direction = clamp(0, 7, _dir)
+    }
+
+    get getDirection() {
+        return this.direction
+    }
 
     draw() {
         let { context, radius } = this;

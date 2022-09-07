@@ -7,14 +7,16 @@ export class Coin extends SpriteClass {
     constructor(props: object) {
         super({
             ...props,
-            type: "coin",
             anchor: {
                 x: 0.5,
                 y: 0.5
             },
-            radius: 15
         })
     }
+
+    direction = 0
+    type = "coin"
+    radius = 15
 
     mov_speed = 5 // Coin moving speed
     scaling_speed = 0.02 // Coin scaling speed

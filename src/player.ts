@@ -2,22 +2,11 @@ import {
     SpriteClass,
     getContext
 } from 'kontra'
+import { ICharacter } from './characterType'
 import { PLAYER_DATA } from './player_data'
 import { drawCharacter } from './utils'
 
-export interface IPlayer {
-    type: string,
-    anchor: {
-        x: number,
-        y: number
-    },
-    radius: number,
-    x: number,
-    y: number,
-    direction: number
-}
-
-export class Player extends SpriteClass implements IPlayer {
+export class Player extends SpriteClass implements ICharacter {
     constructor(props: object) {
         super({
             ...props,
