@@ -25,12 +25,15 @@ export class Player extends SpriteClass implements ICharacter {
 
     width = 0
     height = 0
-    state = 'idle'
+    anim_state = 'idle'
     context = getContext()
+    ang_period = 1000
+    ang_interval = Math.PI / 4
+    ang_speed = this.ang_interval / this.ang_period
 
     draw() {
 
-        switch (this.state) {
+        switch (this.anim_state) {
             case 'idle': {
                 drawCharacter(this.context, PLAYER_DATA.color, PLAYER_DATA.idle.encrypt, PLAYER_DATA.idle.width, PLAYER_DATA.idle.height)
                 this.setScale(4, 4)
