@@ -50,7 +50,7 @@ export class Player extends SpriteClass implements ICharacter {
 
         this.drawCollisionCircle()
 
-        this.rotation = -Math.PI / 4 * this.direction + Math.PI / 2
+        this.rotation = -Math.PI / 2 + Math.PI / 4 * this.direction 
         
         // console.log(this.width, this.height)
     }

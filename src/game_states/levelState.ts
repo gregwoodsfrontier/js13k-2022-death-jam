@@ -56,13 +56,13 @@ class LevelState implements IState {
             y: this.canvas.height / 2
         }
         this.PATTERN_R = this.canvas.width * 0.4
-        this.LOCATION_R = this.canvas.width * 0.02
+        this.LOCATION_R = this.canvas.width * 0.1
 
         this.createScoreText()
         this.determineLocationCoords()
         this.drawLocations(context)
-        // this.createPlayer(COMPASS_DIR.SOUTH)
-        // this.initPlayerInput()
+        this.createPlayer(COMPASS_DIR.SOUTH)
+        this.initPlayerInput()
     }
 
     onUpdate () {
@@ -161,7 +161,6 @@ class LevelState implements IState {
     drawLocations(context: CanvasRenderingContext2D) {
         console.log(this.canvas.width)
         for (let i = 0; i < this.location_coords.length; i++) {
-            console.log(this.LOCATION_R)
             let location = Sprite({
                 x: this.location_coords[i].x,
                 y: this.location_coords[i].y,
@@ -170,12 +169,11 @@ class LevelState implements IState {
                 render: function() {
                     context.fillStyle = this.color ? this.color : "";
                     context.beginPath();
-                    context.arc(0, 0, this.LOCATION_R, 0, 2  * Math.PI);
+                    context.arc(0, 0, 15, 0, 2  * Math.PI);
                     context.fill();
                 }
             })
             this.entities.push(location)
-            console.log(this.entities)
             // location.render()
         }
     }
@@ -208,6 +206,8 @@ class LevelState implements IState {
         {
             player.direction = player.direction - 1 < 0 ? limit : player.direction - 1
         }
+
+        this.setPlayerLocation(player.direction)
     }
 }
 
