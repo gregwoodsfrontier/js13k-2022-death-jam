@@ -68,6 +68,9 @@ class LevelState implements IState {
     onUpdate () {
         // console.log('Level state on Update')
         // put your game logic here
+        this.entities.map(entity => entity.update());
+        // remove destroyed entities
+        this.entities = this.entities.filter(entity => entity.isAlive());
     }
 
     onRender () {
@@ -156,20 +159,23 @@ class LevelState implements IState {
     }
 
     drawLocations(context: CanvasRenderingContext2D) {
+        console.log(this.canvas.width)
         for (let i = 0; i < this.location_coords.length; i++) {
+            console.log(this.LOCATION_R)
             let location = Sprite({
-            x: this.location_coords[i].x,
-            y: this.location_coords[i].y,
-            color: 'white',
-            type: 'location',
-            render: function() {
-                context.fillStyle = this.color ? this.color : "";
-                context.beginPath();
-                context.arc(0, 0, this.LOCATION_R, 0, 2  * Math.PI);
-                context.fill();
-            }
+                x: this.location_coords[i].x,
+                y: this.location_coords[i].y,
+                color: 'white',
+                type: 'location',
+                render: function() {
+                    context.fillStyle = this.color ? this.color : "";
+                    context.beginPath();
+                    context.arc(0, 0, this.LOCATION_R, 0, 2  * Math.PI);
+                    context.fill();
+                }
             })
             this.entities.push(location)
+            console.log(this.entities)
             // location.render()
         }
     }
