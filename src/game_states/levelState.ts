@@ -1,11 +1,9 @@
 import { 
-    init,
-    initKeys,
     Sprite,
-    randInt,
     Text,
     getCanvas,
-    getContext
+    getContext,
+    clamp
 } from 'kontra';
 import { Coin } from '../coin';
 import { Enemy } from '../enemy';
@@ -84,7 +82,35 @@ class LevelState implements IState {
     }
 
     checkCollision() {
-        
+        this.entities.map((en: Sprite, idx: number, arr: Sprite[]) => {
+            if (this.checkOutOfBounds(en)) {
+                arr.splice(idx, 1)
+                en.ttl = 0
+            }
+
+            if(!en.type || en.type !== 'player') { 
+                return 
+            }
+            else if (en.type === 'player') {
+                this.entities.map((en2, idx2, arr) => {
+                    switch (en2.type) {
+                        case 'enemy':
+                            arr.splice(idx2, 1)
+                            en2.ttl = 0
+                            this.changeScore(-10)
+                            break;
+                        case 'coin':
+                            arr.splice(idx2, 1)
+                            en2.ttl = 0
+                            this.changeScore(50)
+                            break;
+                        default:
+                            console.error('The type of collided sprite does not exist')
+                            return;
+                    }
+                })
+            }
+        })
     }
 
     renderUI() {
@@ -198,7 +224,7 @@ class LevelState implements IState {
     }
     
     changeScore(chng: number) {
-        this.score += chng
+        this.score = clamp(0, 99999, this.score + chng)
     }
     
     movePlayerInClock(isClock: boolean)
