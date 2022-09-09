@@ -183,8 +183,15 @@ class LevelState implements IState {
         this.entities.push(enemy)
     }
 
-    createCoin() {
-
+    createCoin(_dir: number) {
+        let angle = _dir * (360 / 8) / 180 * Math.PI
+        
+        let enemy = new Coin({
+            x: this.CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
+            y: this.CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
+        })
+        enemy.setDirection = _dir
+        this.entities.push(enemy)
     }
 
     checkOutOfBounds(spr: Sprite) {
