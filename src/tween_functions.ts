@@ -6,6 +6,7 @@ export type TweenParams = {
 }
 
 // t: current time, b: beginning value, _c: final value, d: total duration
+// t = ++counter, b, _c, d = desired time in frames
 export const tweenFunctions = {
   linear: function(_params: TweenParams) {
     let { t, b, _c, d } = _params

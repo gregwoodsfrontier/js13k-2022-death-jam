@@ -19,9 +19,10 @@ export class Enemy extends SpriteClass implements ICharacter{
     direction = 0
     type = "enemy"
     radius = 15
+    counter = 0
 
-    mov_speed = 5 // Enemy moving speed
-    scaling_speed = 0.02 // Enemy scaling speed
+    mov_speed = 10 // Enemy moving speed
+    scaling_speed = 0.01 // Enemy scaling speed
 
     set setDirection(_dir: number) {
         this.direction = clamp(0, 7, _dir)
@@ -57,8 +58,10 @@ export class Enemy extends SpriteClass implements ICharacter{
         this.scaleX += this.scaling_speed
         this.scaleY += this.scaling_speed
 
+        console.log(this.scaleX)
+
         // update radius
-        // this.radius = this.radius * this.scaleX
+        this.radius = this.radius * this.scaleX
     }
 
 }

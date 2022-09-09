@@ -61,12 +61,15 @@ class LevelState implements IState {
         this.drawLocations(context)
         this.createPlayer(COMPASS_DIR.SOUTH)
         this.initPlayerInput()
+
+        // this.createEnemy(2)
     }
 
     onUpdate () {
+        // this.createEnemy(2)
         // console.log('Level state on Update')
         this.checkCollision()
-        // put your game logic here
+        // update each entity
         this.entities.map(entity => entity.update());
         // remove destroyed entities
         this.entities = this.entities.filter(entity => entity.isAlive());
@@ -77,8 +80,6 @@ class LevelState implements IState {
         this.entities.map(entity => entity.render())
         // this.drawLocations(context)
         this.renderUI()
-
-
     }
 
     checkCollision() {
@@ -95,17 +96,22 @@ class LevelState implements IState {
                 this.entities.map((en2, idx2, arr) => {
                     switch (en2.type) {
                         case 'enemy':
-                            arr.splice(idx2, 1)
-                            en2.ttl = 0
-                            this.changeScore(-10)
+                            if(circleCirCollision(en, en2))
+                            {
+                                arr.splice(idx2, 1)
+                                en2.ttl = 0
+                                this.changeScore(-10)
+                                console.log('enemy collided')
+                            }
                             break;
                         case 'coin':
                             arr.splice(idx2, 1)
                             en2.ttl = 0
                             this.changeScore(50)
+                            console.log('coin collided')
                             break;
                         default:
-                            console.error('The type of collided sprite does not exist')
+                            // console.error('The type of collided sprite does not exist')
                             return;
                     }
                 })
@@ -133,6 +139,10 @@ class LevelState implements IState {
             else if(event.key === ARROW_RIGHT)
             {
               this.movePlayerInClock(false)
+            }
+            else if(event.key === 's')
+            {
+              this.createEnemy(2)
             }
         })
     }
@@ -244,8 +254,8 @@ class LevelState implements IState {
         if(isClock)
         {
             // instead of updating the player direction here, do that in the player class
-            // player.direction = player.direction + 1 > limit ? 0 : player.direction + 1
-            player.moveInArc(isClock)
+            player.direction = player.direction + 1 > limit ? 0 : player.direction + 1
+            // player.moveInArc(isClock)
         }
         else
         {
