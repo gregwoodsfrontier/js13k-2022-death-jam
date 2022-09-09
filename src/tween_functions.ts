@@ -32,5 +32,3 @@ export const tweenFunctions = {
     }
   }
 };
-
-module.exports = tweenFunctions;

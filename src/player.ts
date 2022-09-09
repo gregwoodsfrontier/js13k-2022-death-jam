@@ -1,9 +1,11 @@
 import {
     SpriteClass,
-    getContext
+    getContext,
+    clamp
 } from 'kontra'
 import { ICharacter } from './characterType'
-import { PLAYER_DATA } from './player_data'
+import { PLAYER_DATA } from './spriteData'
+import { tweenFunctions } from './tween_functions'
 import { drawCharacter } from './utils'
 
 export class Player extends SpriteClass implements ICharacter {
@@ -30,6 +32,8 @@ export class Player extends SpriteClass implements ICharacter {
     ang_period = 1000
     ang_interval = Math.PI / 4
     ang_speed = this.ang_interval / this.ang_period
+
+    counter = 0 
 
     draw() {
 
@@ -58,6 +62,22 @@ export class Player extends SpriteClass implements ICharacter {
         // console.log(this.width, this.height)
     }
 
+    // update() {
+    //     this.counter += 1 
+    //     let tweenVal = tweenFunctions.linear({
+    //         t: this.counter,
+    //         b: 0,
+    //         _c: 1,
+    //         d: 60
+    //     })
+    //     if(tweenVal > 0.99) { return }
+    //     console.log(tweenVal)
+    // }
+
+    get getAnimState() {
+        return this.anim_state
+    }
+
     drawCollisionCircle() {
         let { context, radius } = this;
         context.fillStyle = 'rgba(255, 255, 0, 0.25)'
@@ -79,5 +99,16 @@ export class Player extends SpriteClass implements ICharacter {
         c.clearRect(crop_loc.x, crop_loc.y, actual_size.w, actual_size.h)
     }
 
-    
+    moveInArc(isClock: boolean) {
+        const limit = 7
+        let { direction } = this
+        let end_dir = 0
+        if(isClock) {
+            end_dir = direction + 1 > limit ? 0 : direction + 1
+        }
+        else {
+            end_dir = direction - 1 < 0 ? limit : direction - 1
+        }
+        
+    }
 }

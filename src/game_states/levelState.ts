@@ -67,6 +67,7 @@ class LevelState implements IState {
 
     onUpdate () {
         // console.log('Level state on Update')
+        this.checkCollision()
         // put your game logic here
         this.entities.map(entity => entity.update());
         // remove destroyed entities
@@ -82,6 +83,10 @@ class LevelState implements IState {
 
     }
 
+    checkCollision() {
+        
+    }
+
     renderUI() {
         let {scoreText, score} = this
         scoreText.text = `${score}`
@@ -90,6 +95,11 @@ class LevelState implements IState {
 
     initPlayerInput() {
         window.addEventListener(KEY_DOWN, (event) => {
+            let player = this.entities.find(e => e.type === 'player') as Player
+            if(!player){ return }
+
+            if(player.getAnimState !== 'idle'){ return }
+
             if(event.key === ARROW_LEFT)
             {
               this.movePlayerInClock(true)
@@ -194,13 +204,15 @@ class LevelState implements IState {
     movePlayerInClock(isClock: boolean)
     {
         const limit = this.location_coords.length - 1
-        let player = this.entities.find(e => e.type === 'player')
+        let player = this.entities.find(e => e.type === 'player') as Player
 
         if(!player){ return }
 
         if(isClock)
         {
-            player.direction = player.direction + 1 > limit ? 0 : player.direction + 1
+            // instead of updating the player direction here, do that in the player class
+            // player.direction = player.direction + 1 > limit ? 0 : player.direction + 1
+            player.moveInArc(isClock)
         }
         else
         {
