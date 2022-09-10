@@ -156,29 +156,28 @@ export class Player extends SpriteClass implements ICharacter {
                 t: ++this.counter,
                 b: startAng,
                 _c: endAng,
-                d: 30
+                d: 15
             })
             currAngle = clamp(startAng, endAng, temp)
 
             if(currAngle >= endAng) {
                 this.anim_state = PLAYER_STATE.IDLE
-                this.setDirection(this.direction + 1)
+                this.direction = this.setDirection(this.direction + 1)
             }
         }
         else if (_state === PLAYER_STATE.RIGHT) {
             endAng = startAng - Math.PI / 4
-            endAng = startAng + Math.PI / 4
             temp = tweenFunctions.linear({
                 t: ++this.counter,
                 b: startAng,
                 _c: endAng,
-                d: 30
+                d: 15
             })
             currAngle = clamp(endAng, startAng, temp)
 
             if(currAngle <= endAng) {
                 this.anim_state = PLAYER_STATE.IDLE
-                this.setDirection(this.direction - 1)
+                this.direction = this.setDirection(this.direction - 1)
             }
         }
         else if (_state === PLAYER_STATE.IDLE) {
