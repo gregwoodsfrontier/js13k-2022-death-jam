@@ -105,10 +105,13 @@ class LevelState implements IState {
                             }
                             break;
                         case 'coin':
-                            arr.splice(idx2, 1)
-                            en2.ttl = 0
-                            this.changeScore(50)
-                            console.log('coin collided')
+                            if(circleCirCollision(en, en2))
+                            {
+                                arr.splice(idx2, 1)
+                                en2.ttl = 0
+                                this.changeScore(50)
+                                console.log('coin collided')
+                            }
                             break;
                         default:
                             // console.error('The type of collided sprite does not exist')
@@ -140,10 +143,14 @@ class LevelState implements IState {
             {
               this.movePlayerInClock(false)
             }
-            else if(event.key === 's')
-            {
-              this.createEnemy(2)
-            }
+            // else if(event.key === 's')
+            // {
+            //   this.createEnemy(COMPASS_DIR.SOUTH)
+            // }
+            // else if(event.key === 'd')
+            // {
+            //   this.createCoin(COMPASS_DIR.SOUTH_WEST)
+            // }
         })
     }
 
@@ -196,12 +203,12 @@ class LevelState implements IState {
     createCoin(_dir: number) {
         let angle = _dir * (360 / 8) / 180 * Math.PI
         
-        let enemy = new Coin({
+        let coin = new Coin({
             x: this.CANVAS_CENTER.x + Math.cos(angle) * OBJ_SPAWN_R,
             y: this.CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
         })
-        enemy.setDirection = _dir
-        this.entities.push(enemy)
+        coin.setDirection = _dir
+        this.entities.push(coin)
     }
 
     checkOutOfBounds(spr: Sprite) {

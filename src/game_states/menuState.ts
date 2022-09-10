@@ -1,5 +1,7 @@
 import { 
     getCanvas,
+    off,
+    offInput,
     onInput,
     Text
 } from "kontra";
@@ -71,6 +73,7 @@ class MenuState implements IState {
 
     handleInput() {
         gameStateMachine.setState(levelState)
+        offInput(['enter', 'space'])
     }
 }
 

@@ -1,6 +1,6 @@
 import {
-    getCanvas,
-    SpriteClass
+    SpriteClass,
+    clamp
 } from 'kontra'
 import { tweenFunctions } from './tween_functions'
 
@@ -19,8 +19,17 @@ export class Coin extends SpriteClass {
     type = "coin"
     radius = 15
 
-    mov_speed = 5 // Coin moving speed
-    scaling_speed = 0.02 // Coin scaling speed
+    counter = 0
+
+    mov_speed = 7 // Coin moving speed
+
+    set setDirection(_dir: number) {
+        this.direction = clamp(0, 7, _dir)
+    }
+
+    get getDirection() {
+        return this.direction
+    }
 
     draw() {
         let { context, radius } = this;
@@ -34,6 +43,16 @@ export class Coin extends SpriteClass {
         this.travel()
     }
 
+    scaleUpdate() {
+        let currScale = tweenFunctions.linear({
+            t: ++this.counter,
+            b: 1,
+            _c: 2,
+            d: 35
+        })
+        this.setScale(currScale)
+    }
+
     travel() {
         if(this.direction === undefined || typeof this.direction !== 'number')
         {
@@ -41,24 +60,11 @@ export class Coin extends SpriteClass {
         }
 
         let angle = this.direction * (360 / 8) / 180 * Math.PI
-        let {counter} = this
 
         this.x += this.mov_speed * Math.cos(angle)
         this.y += this.mov_speed * Math.sin(angle)
 
-        this.scaleX += this.scaling_speed
-        this.scaleY += this.scaling_speed
-        // this.scaleX = tweenFunctions.linear({
-        //     t: ++counter,
-        //     b: 1,
-        //     _c: 2,
-        //     d: 10
-        // })
-
-        // console.log(this.scaleX)
-
-        // update radius
-        // this.radius = this.radius * this.scaleX
+        this.scaleUpdate()
     }
 
 }

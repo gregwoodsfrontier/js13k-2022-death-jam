@@ -3,6 +3,7 @@ import {
     SpriteClass
 } from 'kontra'
 import { ICharacter } from './characterType'
+import { tweenFunctions } from './tween_functions'
 
 export class Enemy extends SpriteClass implements ICharacter{
     constructor(props: object) {
@@ -19,10 +20,10 @@ export class Enemy extends SpriteClass implements ICharacter{
     direction = 0
     type = "enemy"
     radius = 15
+
     counter = 0
 
-    mov_speed = 10 // Enemy moving speed
-    scaling_speed = 0.01 // Enemy scaling speed
+    mov_speed = 7 // Enemy moving speed
 
     set setDirection(_dir: number) {
         this.direction = clamp(0, 7, _dir)
@@ -44,6 +45,16 @@ export class Enemy extends SpriteClass implements ICharacter{
         this.travelMethod()
     }
 
+    scaleUpdate() {
+        let currScale = tweenFunctions.linear({
+            t: ++this.counter,
+            b: 1,
+            _c: 2,
+            d: 35
+        })
+        this.setScale(currScale)
+    }
+
     travelMethod() {
         if(this.direction === undefined || typeof this.direction !== 'number')
         {
@@ -55,13 +66,7 @@ export class Enemy extends SpriteClass implements ICharacter{
         this.x += this.mov_speed * Math.cos(angle)
         this.y += this.mov_speed * Math.sin(angle)
 
-        this.scaleX += this.scaling_speed
-        this.scaleY += this.scaling_speed
-
-        console.log(this.scaleX)
-
-        // update radius
-        this.radius = this.radius * this.scaleX
+        this.scaleUpdate()
     }
 
 }
