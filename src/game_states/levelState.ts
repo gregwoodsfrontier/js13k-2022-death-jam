@@ -8,7 +8,7 @@ import {
 import { Coin } from '../coin';
 import { Enemy } from '../enemy';
 import { menuState } from '../game_states/menuState';
-import { Player } from '../player';
+import { Player, PLAYER_STATE } from '../player';
 import { circleCirCollision } from '../utils';
 import { IState } from "../state";
 import { COMPASS_DIR } from '../compassDir';
@@ -29,7 +29,7 @@ const KEY_DOWN = 'keydown'
 const ARROW_LEFT = "ArrowLeft"
 const ARROW_RIGHT = "ArrowRight"
 
-type CoordType = {
+export type CoordType = {
     x: number,
     y: number
 }
@@ -133,15 +133,17 @@ class LevelState implements IState {
             let player = this.entities.find(e => e.type === 'player') as Player
             if(!player){ return }
 
-            if(player.getAnimState !== 'idle'){ return }
+            if(player.getAnimState !== PLAYER_STATE.IDLE){ return }
 
             if(event.key === ARROW_LEFT)
             {
-              this.movePlayerInClock(true)
+            //   this.movePlayerInClock(true)
+                player.moveInArc(true)
             }
             else if(event.key === ARROW_RIGHT)
             {
-              this.movePlayerInClock(false)
+            //   this.movePlayerInClock(false)
+                player.moveInArc(false)
             }
             // else if(event.key === 's')
             // {

@@ -110,74 +110,74 @@ function main() {
   /*
     This is to draw circles so that the player would know what is their next location.
   */
-  function drawLocations(context: CanvasRenderingContext2D) {
-    for (let i = 0; i < location_coords.length; i++) {
-      let location = Sprite({
-        x: location_coords[i].x,
-        y: location_coords[i].y,
-        color: 'white',
-        render: function() {
-          context.fillStyle = this.color ? this.color : "";
-          context.beginPath();
-          context.arc(0, 0, LOCATION_R, 0, 2  * Math.PI);
-          context.fill();
-        }
-      })
-      location.render()
-    }
+  // function drawLocations(context: CanvasRenderingContext2D) {
+  //   for (let i = 0; i < location_coords.length; i++) {
+  //     let location = Sprite({
+  //       x: location_coords[i].x,
+  //       y: location_coords[i].y,
+  //       color: 'white',
+  //       render: function() {
+  //         context.fillStyle = this.color ? this.color : "";
+  //         context.beginPath();
+  //         context.arc(0, 0, LOCATION_R, 0, 2  * Math.PI);
+  //         context.fill();
+  //       }
+  //     })
+  //     location.render()
+  //   }
 
-  }
+  // }
 
-  function createPlayer(loc_num: number) {
-    player = new Player({
-      x: location_coords[loc_num].x,
-      y: location_coords[loc_num].y,
-      loc_index: loc_num,
-      direction: loc_num
-    })
-    entities.push(player)
-  }
+  // function createPlayer(loc_num: number) {
+  //   player = new Player({
+  //     x: location_coords[loc_num].x,
+  //     y: location_coords[loc_num].y,
+  //     loc_index: loc_num,
+  //     direction: loc_num
+  //   })
+  //   entities.push(player)
+  // }
 
-  function setPlayerLocation(loc_num: number) {
-    player.x = location_coords[loc_num].x
-    player.y = location_coords[loc_num].y
-    player.direction = loc_num
-  }
+  // function setPlayerLocation(loc_num: number) {
+  //   player.x = location_coords[loc_num].x
+  //   player.y = location_coords[loc_num].y
+  //   player.direction = loc_num
+  // }
 
-  function movePlayerInClock(isClock: boolean)
-  {
-    const limit = location_coords.length - 1
-    if(isClock)
-    {
-      player.loc_index = player.loc_index + 1 > limit ? 0 : player.loc_index + 1
-    }
-    else
-    {
-      player.loc_index = player.loc_index - 1 < 0 ? limit : player.loc_index - 1
-    }
+  // function movePlayerInClock(isClock: boolean)
+  // {
+  //   const limit = location_coords.length - 1
+  //   if(isClock)
+  //   {
+  //     player.loc_index = player.loc_index + 1 > limit ? 0 : player.loc_index + 1
+  //   }
+  //   else
+  //   {
+  //     player.loc_index = player.loc_index - 1 < 0 ? limit : player.loc_index - 1
+  //   }
 
-    setPlayerLocation(player.loc_index)
-  }
+  //   setPlayerLocation(player.loc_index)
+  // }
 
-  function initPlayerInput() {
-    window.addEventListener(KEY_DOWN, (event) => {
-      if(event.key === ARROW_LEFT)
-      {
-        movePlayerInClock(true)
-      }
-      else if(event.key === ARROW_RIGHT)
-      {
-        movePlayerInClock(false)
-      }
-    })
-  }
+  // function initPlayerInput() {
+  //   window.addEventListener(KEY_DOWN, (event) => {
+  //     if(event.key === ARROW_LEFT)
+  //     {
+  //       movePlayerInClock(true)
+  //     }
+  //     else if(event.key === ARROW_RIGHT)
+  //     {
+  //       movePlayerInClock(false)
+  //     }
+  //   })
+  // }
 
   ///////////////////////////////////////////////////////////////////////////////
 
   // function startGame() {
   //   determineLocationCoords()
   //   createPlayer(COMPASS_DIR.SOUTH)
-    initPlayerInput()
+    // initPlayerInput()
   // }
 
   // startGame()

@@ -65,3 +65,11 @@ export function circleCirCollision(circle1: Sprite, circle2: Sprite) {
 
   return Math.hypot(dx, dy) < cirAfterScaleR[0] + cirAfterScaleR[1]
 }
+
+export function getRadFromCompass(_dir: number) {
+  return _dir * (360 / 8) / 180 * Math.PI
+}
+
+export function getFrameNumFromTime(_time: number, fps: number) {
+  return Math.floor(_time * fps / 1000)
+}
