@@ -149,6 +149,7 @@ export class Player extends SpriteClass implements ICharacter {
         let endAng = 0
         let currAngle = 0
         let temp = 0
+        let framTime = 12
         
         if (_state === PLAYER_STATE.LEFT) {
             endAng = startAng + Math.PI / 4
@@ -156,7 +157,7 @@ export class Player extends SpriteClass implements ICharacter {
                 t: ++this.counter,
                 b: startAng,
                 _c: endAng,
-                d: 15
+                d: framTime
             })
             currAngle = clamp(startAng, endAng, temp)
 
@@ -171,7 +172,7 @@ export class Player extends SpriteClass implements ICharacter {
                 t: ++this.counter,
                 b: startAng,
                 _c: endAng,
-                d: 15
+                d: framTime
             })
             currAngle = clamp(endAng, startAng, temp)
 
