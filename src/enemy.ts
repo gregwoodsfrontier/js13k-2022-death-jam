@@ -33,7 +33,7 @@ export class Enemy extends SpriteClass implements ICharacter{
 
     counter = 0
 
-    mov_speed = 7 // Enemy moving speed
+    mov_speed = 6 // Enemy moving speed
 
     testSprite: Sprite
 

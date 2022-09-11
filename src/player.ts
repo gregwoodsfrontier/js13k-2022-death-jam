@@ -78,24 +78,13 @@ export class Player extends SpriteClass implements ICharacter {
                 break
             }
         }
-
         // this.drawCollisionCircle()
         this.launchMovement(this.anim_state)
     }
 
-    
-
-    // update() {
-    //     this.counter += 1 
-    //     let tweenVal = tweenFunctions.linear({
-    //         t: this.counter,
-    //         b: 0,
-    //         _c: 1,
-    //         d: 60
-    //     })
-    //     if(tweenVal > 0.99) { return }
-    //     console.log(tweenVal)
-    // }
+    get getDirection () {
+        return this.direction
+    }
 
     get getAnimState() {
         return this.anim_state

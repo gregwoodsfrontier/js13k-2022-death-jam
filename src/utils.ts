@@ -3,15 +3,6 @@ import {
 } from 'kontra';
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Draw a pixel using fillRect method
- */
-export function drawPixelFill(context: CanvasRenderingContext2D, x: number, y: number, color: string) {
-  var roundedX = Math.round(x);
-  var roundedY = Math.round(y);
-  context.fillStyle = color || '#000';
-  context.fillRect(roundedX, roundedY, 1, 1);
-}
 
 /**
  * Draw the graphic according to the encrypted data

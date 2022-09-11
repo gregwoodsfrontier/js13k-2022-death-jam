@@ -14,14 +14,6 @@ import { IState } from "../state";
 import { COMPASS_DIR } from '../compassDir';
 import { gameStateMachine } from '../game_state_machine';
 
-// let { canvas, context } = init();
-
-// const canvas = getCanvas()
-// canvas.width = 640
-// canvas.height = 640
-
-// const PATTERN_R = canvas.width * 0.4
-// const LOCATION_R = canvas.width * 0.02
 const NUM_OF_LOC = 8
 const OBJ_SPAWN_R = 30
 
@@ -47,6 +39,9 @@ class LevelState implements IState {
     private PATTERN_R = 0
     private LOCATION_R = 0
 
+    globalCount = 0
+    counter = 0
+
     onEnter () {
         let context = getContext()
         this.canvas = getCanvas()
@@ -65,6 +60,10 @@ class LevelState implements IState {
     }
 
     onUpdate () {
+        this.updateGlobalCount()
+        
+        this.spawn()
+
         this.checkCollision()
         // update each entity
         this.entities.map(entity => entity.update());
@@ -77,6 +76,25 @@ class LevelState implements IState {
         this.entities.map(entity => entity.render())
         // this.drawLocations(context)
         this.renderUI()
+    }
+
+    spawn() {
+        // updates counter per frame
+        this.counter += 1
+
+        // spawn obj after 30 frames
+        if (this.counter > 30) {
+            let player = this.getPlayer()
+            let playerDir = player?.getDirection
+            if(!playerDir) { return }
+            this.createEnemy(playerDir)
+
+            this.counter = 0
+        }
+    }
+
+    updateGlobalCount() {
+        this.globalCount += 1
     }
 
     checkCollision() {
@@ -145,15 +163,13 @@ class LevelState implements IState {
         //   this.movePlayerInClock(false)
             player.moveInArc(false)
         }
-        else if(event.key === 's')
-        {
-        //   this.createEnemy(COMPASS_DIR.SOUTH)
-            this.onGameOver()
-        }
-        else if(event.key === 'd')
-        {
-        //   this.createCoin(COMPASS_DIR.SOUTH_WEST)
-        }
+    }
+
+    getPlayer() {
+        let player = this.entities.find(e => e.type === 'player') as Player
+        if(!player) { return undefined }
+
+        return player
     }
 
     createScoreText() {
@@ -200,7 +216,6 @@ class LevelState implements IState {
         })
         enemy.setDirection = _dir
 
-        // enemy.playAnimation('walk')
         this.entities.push(enemy)
     }
 
@@ -254,26 +269,26 @@ class LevelState implements IState {
         this.score = clamp(0, 99999, this.score + chng)
     }
     
-    movePlayerInClock(isClock: boolean)
-    {
-        const limit = this.location_coords.length - 1
-        let player = this.entities.find(e => e.type === 'player') as Player
+    // movePlayerInClock(isClock: boolean)
+    // {
+    //     const limit = this.location_coords.length - 1
+    //     let player = this.entities.find(e => e.type === 'player') as Player
 
-        if(!player){ return }
+    //     if(!player){ return }
 
-        if(isClock)
-        {
-            // instead of updating the player direction here, do that in the player class
-            player.direction = player.direction + 1 > limit ? 0 : player.direction + 1
-            // player.moveInArc(isClock)
-        }
-        else
-        {
-            player.direction = player.direction - 1 < 0 ? limit : player.direction - 1
-        }
+    //     if(isClock)
+    //     {
+    //         // instead of updating the player direction here, do that in the player class
+    //         player.direction = player.direction + 1 > limit ? 0 : player.direction + 1
+    //         // player.moveInArc(isClock)
+    //     }
+    //     else
+    //     {
+    //         player.direction = player.direction - 1 < 0 ? limit : player.direction - 1
+    //     }
 
-        this.setPlayerLocation(player.direction)
-    }
+    //     this.setPlayerLocation(player.direction)
+    // }
 
     onGameOver() {
         
