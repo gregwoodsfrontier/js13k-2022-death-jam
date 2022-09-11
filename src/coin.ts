@@ -28,7 +28,7 @@ export class Coin extends SpriteClass {
 
     counter = 0
 
-    mov_speed = 7 // Coin moving speed
+    mov_speed = 5 // Coin moving speed
     sprite: Sprite
 
     set setDirection(_dir: number) {

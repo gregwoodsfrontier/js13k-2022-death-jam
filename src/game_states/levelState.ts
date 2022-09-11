@@ -3,7 +3,8 @@ import {
     Text,
     getCanvas,
     getContext,
-    clamp
+    clamp,
+    randInt
 } from 'kontra';
 import { Coin } from '../coin';
 import { Enemy } from '../enemy';
@@ -61,7 +62,7 @@ class LevelState implements IState {
 
     onUpdate () {
         this.updateGlobalCount()
-        
+
         this.spawn()
 
         this.checkCollision()
@@ -87,7 +88,10 @@ class LevelState implements IState {
             let player = this.getPlayer()
             let playerDir = player?.getDirection
             if(!playerDir) { return }
-            this.createEnemy(playerDir)
+
+            // this.createEnemy(playerDir)
+            let spawnDir = randInt(playerDir - 2, playerDir + 2)
+            this.createCoin(spawnDir)
 
             this.counter = 0
         }
