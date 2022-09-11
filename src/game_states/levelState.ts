@@ -119,8 +119,7 @@ class LevelState implements IState {
                             {
                                 arr.splice(idx2, 1)
                                 en2.ttl = 0
-                                this.changeScore(-10)
-                                console.log('enemy collided')
+                                this.changeScore(-60)
                             }
                             break;
                         case 'coin':
@@ -128,8 +127,7 @@ class LevelState implements IState {
                             {
                                 arr.splice(idx2, 1)
                                 en2.ttl = 0
-                                this.changeScore(50)
-                                console.log('coin collided')
+                                this.changeScore(COIN_SCORE)
                             }
                             break;
                         default:
