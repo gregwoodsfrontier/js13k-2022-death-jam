@@ -12,6 +12,7 @@ import { Player, PLAYER_STATE } from '../player';
 import { circleCirCollision } from '../utils';
 import { IState } from "../state";
 import { COMPASS_DIR } from '../compassDir';
+import { gameStateMachine } from '../game_state_machine';
 
 // let { canvas, context } = init();
 
@@ -61,13 +62,9 @@ class LevelState implements IState {
         this.drawLocations(context)
         this.createPlayer(COMPASS_DIR.SOUTH)
         this.initPlayerInput()
-
-        // this.createEnemy(2)
     }
 
     onUpdate () {
-        // this.createEnemy(2)
-        // console.log('Level state on Update')
         this.checkCollision()
         // update each entity
         this.entities.map(entity => entity.update());
@@ -129,31 +126,34 @@ class LevelState implements IState {
     }
 
     initPlayerInput() {
-        window.addEventListener(KEY_DOWN, (event) => {
-            let player = this.entities.find(e => e.type === 'player') as Player
-            if(!player){ return }
+        window.addEventListener(KEY_DOWN, this.defineInputEvent)
+    }
 
-            if(player.getAnimState !== PLAYER_STATE.IDLE){ return }
+    defineInputEvent = (event: KeyboardEvent) => {
+        let player = this.entities.find(e => e.type === 'player') as Player
+        if(!player){ return }
 
-            if(event.key === ARROW_LEFT)
-            {
-            //   this.movePlayerInClock(true)
-                player.moveInArc(true)
-            }
-            else if(event.key === ARROW_RIGHT)
-            {
-            //   this.movePlayerInClock(false)
-                player.moveInArc(false)
-            }
-            else if(event.key === 's')
-            {
-              this.createEnemy(COMPASS_DIR.SOUTH)
-            }
-            else if(event.key === 'd')
-            {
-              this.createCoin(COMPASS_DIR.SOUTH_WEST)
-            }
-        })
+        if(player.getAnimState !== PLAYER_STATE.IDLE){ return }
+
+        if(event.key === ARROW_LEFT)
+        {
+        //   this.movePlayerInClock(true)
+            player.moveInArc(true)
+        }
+        else if(event.key === ARROW_RIGHT)
+        {
+        //   this.movePlayerInClock(false)
+            player.moveInArc(false)
+        }
+        else if(event.key === 's')
+        {
+        //   this.createEnemy(COMPASS_DIR.SOUTH)
+            this.onGameOver()
+        }
+        else if(event.key === 'd')
+        {
+        //   this.createCoin(COMPASS_DIR.SOUTH_WEST)
+        }
     }
 
     createScoreText() {
@@ -273,6 +273,22 @@ class LevelState implements IState {
         }
 
         this.setPlayerLocation(player.direction)
+    }
+
+    onGameOver() {
+        
+        window.removeEventListener(KEY_DOWN, this.defineInputEvent)
+
+        this.despawnEntities()
+        // go to menu state and set gameover as true
+        gameStateMachine.setState(menuState, true)
+    }
+
+    despawnEntities() {
+        for (let en of this.entities) {
+            en.ttl = 0
+        }
+        this.entities = []
     }
 }
 

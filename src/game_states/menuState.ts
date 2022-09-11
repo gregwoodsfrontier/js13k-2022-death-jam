@@ -16,7 +16,8 @@ class MenuState implements IState {
     private titleText!: Text;
     private mainText!: Text
 
-    onEnter () {
+    onEnter (isGameOver: boolean) {
+        this.isGameOver = isGameOver
         this.drawMenu();
         onInput(['enter', 'space'], this.handleInput)
     }
