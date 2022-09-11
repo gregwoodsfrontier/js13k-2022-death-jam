@@ -36,6 +36,6 @@ export const ENEMY_DATA = {
 export const COIN_DATA = {
     color:'2a173b95c5ac69809e4c5c873f2c5f',
     encrypt:'@@HIIA@@@@HIIA@@@@@II@@@@@@II@@@@@@HA@@@@@@II@@@@@@II@@@@@HIIA@@@HQRRJA@@@QRRJA@@@HRRI@@@@HRRA@@@@@QJ@@@@@HRRA@@@@IRRA@@@HQRRJ@@@QZ[[SJ@@HZ[[SJ@@@Q[[RA@@@H[SA@@@@HSRA@@@@HZ[A@@@HR[[J@@@QZ[[SA@HZ[[[[SA@Q[[[[J@@H[[[SA@@@Y[SJ@@@@H[RA@@@@QZ[K@@@HZ[[[A@@Q[[[[J@HZ[[[[SA@Y[[[[SA@H[[[[J@@@Y[SJ@@@@H[RA@@@@QZ[K@@@Q[[[[A@HZ[[[[K@Q[[[[[[JH[[[[[SA@Y[[[[J@@@Y[SJ@@@@H[SA@@@@QZ[K@@@Q[[[[K@HZ[[[[[AY[[[[[[KH[[[[[SA@Y[[[[J@@@Y[[J@@@@H[SA@@@@Q[[K@@@Q[[[[K@HZ[[[[[AY[[[[[[KH[[[[[SA@Y[[[[J@@@Y[[J@@@@H[SA@@@@Q[[K@@@Q[[[[K@HZ[[[[[Aa[[[[[[KH[[[[[SA@Y[[[[J@@@Y[cJ@@@@H[[A@@@@Q\\[K@@@Q[[[[K@HZ[[[[[Aa\\[[[[[LH[[[[[SA@Y[[[cJ@@@Y[cJ@@@@H[cA@@@@Q\\[K@@@Q\\[[[K@HZ[[[[[Aa\\[[[[cLH[[[[[SA@Y[[[cJ@@@Y[dJ@@@@H[cA@@@@Qd[K@@@Q\\[[[K@HZ[[[[[AHd[[[[dA@Y[[[[dA@H[[[dK@@@Y[dJ@@@@H[dA@@@@Qd[K@@@Yd[[[A@Hd[[[[K@Hd\\[[ddA@Y[[[cL@@H[[cdA@@@YcdK@@@@HcdA@@@@Yd\\K@@@Hd\\[[A@@a\\[[[K@@addddL@@H\\[ddL@@@Y[ddA@@@HddA@@@@HddA@@@@HddA@@@Hdd[K@@@add[cA@@HaddLA@@@addLA@@@HddI@@@@HddA@@@@@aL@@@@@HddA@@@@IddA@@@HaddL@@@@HIIA@@@@HIIA@@@@@II@@@@@@II@@@@@@HA@@@@@@II@@@@@@II@@@@@HIIA@@',
-    width: 60,
-    height: 20
+    width: 128,
+    height: 16
 }

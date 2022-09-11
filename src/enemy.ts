@@ -1,4 +1,5 @@
 import {
+    init,
     clamp,
     SpriteClass,
     SpriteSheet,
@@ -9,27 +10,7 @@ import {
 import { ICharacter } from './characterType'
 import { ENEMY_DATA } from './spriteData'
 import { tweenFunctions } from './tween_functions'
-import { drawCharacter } from './utils'
-
-function createSpriteSheet() {
-    let canvasB = document.createElement('canvas')
-    let contextB = canvasB.getContext('2d')
-    drawCharacter(contextB, ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
-
-    let spritesheet = SpriteSheet({
-        image: canvasB,
-        frameWidth: ENEMY_DATA.SKULL.width / 3,
-        frameHeight: ENEMY_DATA.SKULL.height,
-        animations: {
-            walk: {
-                frames: [1,2],
-                frameRate: 30
-            }
-        }
-    })
-
-    return spritesheet
-}
+import { drawCharacter, drawSprite } from './utils'
 
 export class Enemy extends SpriteClass implements ICharacter{
     constructor(props: object) {
@@ -42,10 +23,8 @@ export class Enemy extends SpriteClass implements ICharacter{
             opacity: 0.75
         })
 
-        let ss = this.testCreateSpriteSheet()
-        console.log(ss)
-        this.animations = ss.animations
-        // console.log(ss)
+
+        this.testSprite = this.makeSpriteSheet()
     }
 
     direction = 0
@@ -56,6 +35,8 @@ export class Enemy extends SpriteClass implements ICharacter{
 
     mov_speed = 7 // Enemy moving speed
 
+    testSprite: Sprite
+
     set setDirection(_dir: number) {
         this.direction = clamp(0, 7, _dir)
     }
@@ -64,26 +45,44 @@ export class Enemy extends SpriteClass implements ICharacter{
         return this.direction
     }
 
-    testCreateSpriteSheet() {
-        drawCharacter(getContext(), ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
+    makeSpriteSheet(): Sprite {
+
+        let canvasB = document.createElement('canvas')
+        let oCtx = canvasB.getContext('2d')
+
+        canvasB.width = 100
+        canvasB.height = 100
+
+        //@ts-ignore
+        drawSprite(oCtx, ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
 
         let spritesheet = SpriteSheet({
-            image: getCanvas(),
+            image: canvasB,
             frameWidth: ENEMY_DATA.SKULL.width / 3,
             frameHeight: ENEMY_DATA.SKULL.height,
             animations: {
                 walk: {
                     frames: '0..2',
-                    frameRate: 30
+                    frameRate: 20
                 }
             }
         })
 
-        return spritesheet
+        return Sprite({
+            x: 0,
+            y: 0,
+            anchor: {
+                x: 0.5,
+                y: 0.5
+            },
+            animations: spritesheet.animations
+        })       
     }
 
     draw() {
-        // drawCharacter(this.context, ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
+        this.testSprite.setScale(2)
+        this.testSprite.render()
+        // this.drawCollisionCircle()
     }
 
     drawCollisionCircle() {
@@ -96,6 +95,7 @@ export class Enemy extends SpriteClass implements ICharacter{
 
     update() {
         this.travelMethod()
+        this.testSprite.update()
     }
 
     scaleUpdate() {

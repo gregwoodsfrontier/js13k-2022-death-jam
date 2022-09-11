@@ -149,10 +149,10 @@ class LevelState implements IState {
             {
               this.createEnemy(COMPASS_DIR.SOUTH)
             }
-            // else if(event.key === 'd')
-            // {
-            //   this.createCoin(COMPASS_DIR.SOUTH_WEST)
-            // }
+            else if(event.key === 'd')
+            {
+              this.createCoin(COMPASS_DIR.SOUTH_WEST)
+            }
         })
     }
 
@@ -200,7 +200,7 @@ class LevelState implements IState {
         })
         enemy.setDirection = _dir
 
-        enemy.playAnimation('walk')
+        // enemy.playAnimation('walk')
         this.entities.push(enemy)
     }
 
@@ -223,7 +223,6 @@ class LevelState implements IState {
     }
 
     drawLocations(context: CanvasRenderingContext2D) {
-        console.log(this.canvas.width)
         for (let i = 0; i < this.location_coords.length; i++) {
             let location = Sprite({
                 x: this.location_coords[i].x,

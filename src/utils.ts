@@ -52,6 +52,36 @@ export function drawCharacter(context: CanvasRenderingContext2D, color_data: str
   }
 }
 
+export function drawSprite(context: CanvasRenderingContext2D, color_data: string, frame_data: string, _width: number, _height: number) {
+  if(!context) { return }
+  let c = context
+  let C = color_data
+  let px = [] as number[]
+  for (let a of frame_data) {
+      let z = a.charCodeAt(0)
+      px.push(z & 7)
+      px.push((z >> 3) & 7)
+  }
+  let W = _width
+  let H = _height
+  
+  for (let j = 0; j < H; j++) {
+      for (let i = 0; i < W; i++) {
+          if (px[j * W + i]) {
+              // c.fillStyle = "#" + C.substr(6 * (px[j * W + i] - 1), 6)
+              let start = 6 * (px[j * W + i] - 1)
+              let end = start + 6
+              let pos = {
+                  x: i,
+                  y: j
+              }
+              c.fillStyle = "#" + C.slice(start, end)
+              c.fillRect(pos.x , pos.y , 1, 1)
+          }
+      }
+  }
+}
+
 /**
  * Determine if a circle and a circle collide
 */
