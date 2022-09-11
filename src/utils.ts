@@ -23,6 +23,7 @@ export function drawPixelFill(context: CanvasRenderingContext2D, x: number, y: n
  * @param _height 
  */
 export function drawCharacter(context: CanvasRenderingContext2D, color_data: string, frame_data: string, _width: number, _height: number) {
+  if(!context) { return }
   let c = context
   let C = color_data
   let px = [] as number[]

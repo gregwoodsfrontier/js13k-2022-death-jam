@@ -145,10 +145,10 @@ class LevelState implements IState {
             //   this.movePlayerInClock(false)
                 player.moveInArc(false)
             }
-            // else if(event.key === 's')
-            // {
-            //   this.createEnemy(COMPASS_DIR.SOUTH)
-            // }
+            else if(event.key === 's')
+            {
+              this.createEnemy(COMPASS_DIR.SOUTH)
+            }
             // else if(event.key === 'd')
             // {
             //   this.createCoin(COMPASS_DIR.SOUTH_WEST)
@@ -199,6 +199,8 @@ class LevelState implements IState {
             y: this.CANVAS_CENTER.y + Math.sin(angle) * OBJ_SPAWN_R,
         })
         enemy.setDirection = _dir
+
+        enemy.playAnimation('walk')
         this.entities.push(enemy)
     }
 

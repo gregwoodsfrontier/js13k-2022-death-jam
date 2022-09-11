@@ -1,9 +1,35 @@
 import {
     clamp,
-    SpriteClass
+    SpriteClass,
+    SpriteSheet,
+    Sprite,
+    getContext,
+    getCanvas
 } from 'kontra'
 import { ICharacter } from './characterType'
+import { ENEMY_DATA } from './spriteData'
 import { tweenFunctions } from './tween_functions'
+import { drawCharacter } from './utils'
+
+function createSpriteSheet() {
+    let canvasB = document.createElement('canvas')
+    let contextB = canvasB.getContext('2d')
+    drawCharacter(contextB, ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
+
+    let spritesheet = SpriteSheet({
+        image: canvasB,
+        frameWidth: ENEMY_DATA.SKULL.width / 3,
+        frameHeight: ENEMY_DATA.SKULL.height,
+        animations: {
+            walk: {
+                frames: [1,2],
+                frameRate: 30
+            }
+        }
+    })
+
+    return spritesheet
+}
 
 export class Enemy extends SpriteClass implements ICharacter{
     constructor(props: object) {
@@ -15,6 +41,11 @@ export class Enemy extends SpriteClass implements ICharacter{
             },
             opacity: 0.75
         })
+
+        let ss = this.testCreateSpriteSheet()
+        console.log(ss)
+        this.animations = ss.animations
+        // console.log(ss)
     }
 
     direction = 0
@@ -33,7 +64,29 @@ export class Enemy extends SpriteClass implements ICharacter{
         return this.direction
     }
 
+    testCreateSpriteSheet() {
+        drawCharacter(getContext(), ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
+
+        let spritesheet = SpriteSheet({
+            image: getCanvas(),
+            frameWidth: ENEMY_DATA.SKULL.width / 3,
+            frameHeight: ENEMY_DATA.SKULL.height,
+            animations: {
+                walk: {
+                    frames: '0..2',
+                    frameRate: 30
+                }
+            }
+        })
+
+        return spritesheet
+    }
+
     draw() {
+        // drawCharacter(this.context, ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
+    }
+
+    drawCollisionCircle() {
         let { context, radius } = this;
         context.fillStyle = '#b3a378';
         context.beginPath();
