@@ -33,7 +33,7 @@ export class Enemy extends SpriteClass implements ICharacter{
 
     counter = 0
 
-    mov_speed = 6 // Enemy moving speed
+    mov_speed = 4 // Enemy moving speed
 
     testSprite: Sprite
 
@@ -50,8 +50,8 @@ export class Enemy extends SpriteClass implements ICharacter{
         let canvasB = document.createElement('canvas')
         let oCtx = canvasB.getContext('2d')
 
-        canvasB.width = 100
-        canvasB.height = 100
+        canvasB.width = ENEMY_DATA.SKULL.width
+        canvasB.height = ENEMY_DATA.SKULL.height
 
         //@ts-ignore
         drawSprite(oCtx, ENEMY_DATA.SKULL.color, ENEMY_DATA.SKULL.encrypt, ENEMY_DATA.SKULL.width, ENEMY_DATA.SKULL.height)
@@ -103,7 +103,7 @@ export class Enemy extends SpriteClass implements ICharacter{
             t: ++this.counter,
             b: 1,
             _c: 2,
-            d: 35
+            d: 60
         })
         this.setScale(currScale)
     }

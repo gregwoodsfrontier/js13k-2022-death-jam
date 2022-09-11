@@ -63,8 +63,8 @@ export class Coin extends SpriteClass {
         let canvasB = document.createElement('canvas')
         let oCtx = canvasB.getContext('2d')
 
-        canvasB.width = 128
-        canvasB.height = 100
+        canvasB.width = COIN_DATA.width
+        canvasB.height = COIN_DATA.height
 
         //@ts-ignore
         drawSprite(oCtx, COIN_DATA.color, COIN_DATA.encrypt, COIN_DATA.width, COIN_DATA.height)
