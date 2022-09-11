@@ -41,6 +41,10 @@ class LevelState implements IState {
 
     globalCount = 0
     counter = 0
+    switch = 0
+    threshold = [ 60 * 4, 60 * 2]
+    currThres = this.threshold[0]
+    isCoinSpawn = true
 
     onEnter () {
         let context = getContext()
@@ -93,15 +97,25 @@ class LevelState implements IState {
     spawn() {
         // updates counter per frame
         this.counter += 1
+        this.switch += 1
+        // this.toCoinCount += 1
 
         let player = this.getPlayer()
         let playerDir = player?.getDirection
         if(!playerDir) { return }
 
+        this.currThres = this.threshold[this.isCoinSpawn ? 0 : 1]
+
+        if(this.switch > this.currThres) {
+            this.isCoinSpawn = !this.isCoinSpawn
+
+            this.switch = 0
+        }
+
         // spawn obj after 30 frames
-        if (this.counter > 30) {
+        if (this.counter > 45) {
             // this.createEnemy(playerDir)
-            if(this.globalCount < 60 * 2) {
+            if(this.isCoinSpawn) {
                 let spawnDir = randInt(playerDir - 2, playerDir + 2)
                 this.createCoin(spawnDir)
             }
@@ -116,6 +130,7 @@ class LevelState implements IState {
                     this.createEnemy(startDir)
                 }
             }
+
             this.counter = 0
         }
     }
