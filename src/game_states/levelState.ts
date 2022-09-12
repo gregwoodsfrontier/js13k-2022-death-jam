@@ -42,9 +42,11 @@ class LevelState implements IState {
     globalCount = 0
     counter = 0
     switch = 0
-    threshold = [ 60 * 4, 60 * 2]
+    private threshold = [ 60 * 20, 60 * 10 ]
     currThres = this.threshold[0]
     isCoinSpawn = true
+    spawnThres = 45
+    rampPeriod = 0;
 
     onEnter () {
         let context = getContext()
@@ -56,9 +58,7 @@ class LevelState implements IState {
         this.PATTERN_R = this.canvas.width * 0.4
         this.LOCATION_R = this.canvas.width * 0.1
 
-        this.hitCount = 0
-        this.counter = 0
-        this.globalCount = 0
+        this.resetParams()
 
         this.createScoreText()
         this.determineLocationCoords()
@@ -67,10 +67,23 @@ class LevelState implements IState {
         this.initPlayerInput()
     }
 
+    resetParams() {
+        this.hitCount = 0
+        this.counter = 0
+        this.globalCount = 0
+        this.switch = 0
+        this.isCoinSpawn = true
+        this.currThres = this.threshold[0]
+        this.spawnThres = 45
+        this.rampPeriod = 60 * 60
+    }
+
     onUpdate () {
-        this.checkGameOver()
+        // this.checkGameOver()
 
         this.updateGlobalCount()
+
+        this.launchDifficultyRamp()
 
         this.spawn()
 
@@ -112,7 +125,7 @@ class LevelState implements IState {
             this.switch = 0
         }
 
-        // spawn obj after 30 frames
+        // spawn obj after 45 frames
         if (this.counter > 45) {
             // this.createEnemy(playerDir)
             if(this.isCoinSpawn) {
@@ -133,6 +146,14 @@ class LevelState implements IState {
 
             this.counter = 0
         }
+    }
+
+    launchDifficultyRamp () {
+        if (this.counter > this.rampPeriod) {
+            this.spawnThres *= 0.9
+            this.rampPeriod += 60 * 180
+        }
+        return
     }
 
     updateGlobalCount() {
