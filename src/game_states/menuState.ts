@@ -1,6 +1,5 @@
 import { 
     getCanvas,
-    off,
     offInput,
     onInput,
     Text
@@ -15,6 +14,8 @@ class MenuState implements IState {
     
     private titleText!: Text;
     private mainText!: Text
+    private instruct!: Text
+    private instructB!: Text
 
     onEnter (isGameOver: boolean) {
         this.isGameOver = isGameOver
@@ -41,6 +42,8 @@ class MenuState implements IState {
 
         this.titleText.render()
         this.mainText.render()
+        this.instruct.render()
+        this.instructB.render()
     }
 
     get getGameOver() {
@@ -68,6 +71,24 @@ class MenuState implements IState {
             color: 'white',
             x: canvas.width / 2,
             y: canvas.height / 2 + 0,
+            anchor: {x: 0.5, y: 0.5}
+        })
+
+        this.instruct = Text({
+            text: '<- to turn clock, -> to turn anti-clock',
+            font: '30px Arial',
+            color: 'white',
+            x: canvas.width / 2,
+            y: canvas.height / 2 + 100,
+            anchor: {x: 0.5, y: 0.5}
+        })
+
+        this.instructB = Text({
+            text: 'Get more points!!',
+            font: '30px Arial',
+            color: 'white',
+            x: canvas.width / 2,
+            y: canvas.height / 2 + 150,
             anchor: {x: 0.5, y: 0.5}
         })
     }
