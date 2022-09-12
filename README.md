@@ -14,3 +14,10 @@ You can go in 8 locations. Press <- and -> to go clock and counter-clockwise res
 
 Depends on life giving me lemons or not.
 
+## Credits
+
+Art Courtesy from Cable. Follow him at [Twitter](https://twitter.com/II_Cable_II).
+
+## About the author
+
+Salaryman by day. Game Dev (learning to be) by night. Follow me at [Twitter](https://twitter.com/GrizzyJones)
