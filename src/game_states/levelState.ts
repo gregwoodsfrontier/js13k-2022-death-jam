@@ -31,6 +31,7 @@ export type CoordType = {
 class LevelState implements IState {
     private canvas = getCanvas()
     private scoreText!: Text
+    private timerText!: Text
     private score = 0
     private entities: Sprite[] = []
     private location_coords: CoordType[] = []
@@ -61,6 +62,7 @@ class LevelState implements IState {
         this.resetParams()
 
         this.createScoreText()
+        this.createTime()
         this.determineLocationCoords()
         this.drawLocations(context)
         this.createPlayer(COMPASS_DIR.SOUTH)
@@ -79,7 +81,7 @@ class LevelState implements IState {
     }
 
     onUpdate () {
-        // this.checkGameOver()
+        this.checkGameOver()
 
         this.updateGlobalCount()
 
@@ -95,9 +97,7 @@ class LevelState implements IState {
     }
 
     onRender () {
-        // let context = getContext()
         this.entities.map(entity => entity.render())
-        // this.drawLocations(context)
         this.renderUI()
     }
 
@@ -111,11 +111,10 @@ class LevelState implements IState {
         // updates counter per frame
         this.counter += 1
         this.switch += 1
-        // this.toCoinCount += 1
 
         let player = this.getPlayer()
         let playerDir = player?.getDirection
-        if(!playerDir) { return }
+        if(playerDir === undefined) { return }
 
         this.currThres = this.threshold[this.isCoinSpawn ? 0 : 1]
 
@@ -208,9 +207,21 @@ class LevelState implements IState {
     }
 
     renderUI() {
-        let {scoreText, score} = this
+        let {scoreText, score, timerText} = this
         scoreText.text = `${score}`
         scoreText.render()
+
+        let secondText = this.getSeconds(this.globalCount) < 10 ? `0${this.getSeconds(this.globalCount)}` : `${this.getSeconds(this.globalCount)}`
+        timerText.text = `${this.getMinutes(this.globalCount)}:`+secondText
+        timerText.render()
+    }
+
+    getMinutes(count: number) {
+        return Math.floor(count / (60 * 60))
+    }
+
+    getSeconds(count: number) {
+        return Math.floor(count / 60)
     }
 
     initPlayerInput() {
@@ -248,6 +259,17 @@ class LevelState implements IState {
             font: '77px Arial',
             color: 'white',
             x: 100,
+            y: 50,
+            anchor: {x: 0.5, y: 0.5}
+        });
+    }
+
+    createTime() {
+        this.timerText = Text({
+            text: `0:00`,
+            font: '77px Arial',
+            color: 'white',
+            x: this.canvas.width - 100,
             y: 50,
             anchor: {x: 0.5, y: 0.5}
         });
