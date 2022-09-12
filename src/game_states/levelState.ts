@@ -4,7 +4,9 @@ import {
     getCanvas,
     getContext,
     clamp,
-    randInt
+    randInt,
+    getStoreItem,
+    setStoreItem
 } from 'kontra';
 import { Coin } from '../coin';
 import { Enemy } from '../enemy';
@@ -364,6 +366,12 @@ class LevelState implements IState {
     onGameOver() {
         
         window.removeEventListener(KEY_DOWN, this.defineInputEvent)
+
+        const nowHigh = getStoreItem('highscore')
+        
+        if(this.score > nowHigh) {
+            setStoreItem('highscore', this.score)
+        }
 
         this.despawnEntities()
         // go to menu state and set gameover as true

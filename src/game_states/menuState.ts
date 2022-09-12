@@ -1,7 +1,9 @@
 import { 
     getCanvas,
+    getStoreItem,
     offInput,
     onInput,
+    setStoreItem,
     Text
 } from "kontra";
 import { gameStateMachine } from "../game_state_machine";
@@ -16,8 +18,12 @@ class MenuState implements IState {
     private mainText!: Text
     private instruct!: Text
     private instructB!: Text
+    // private highScore = 0
 
     onEnter (isGameOver: boolean) {
+        if(isGameOver === false) {
+            setStoreItem('highscore', 0)
+        }
         this.isGameOver = isGameOver
         this.drawMenu();
         onInput(['enter', 'space'], this.handleInput)
@@ -32,7 +38,9 @@ class MenuState implements IState {
         // onInput(['enter', 'space'], this.handleInput)
 
         if(this.getGameOver === true) {
-            this.titleText.text = 'Game Over ?'
+            const high = getStoreItem('highscore')
+            console.log(high, 'highscore')
+            this.titleText.text = `Game Over? High: ${high}`
             this.mainText.text = 'Press Enter to re-play'
         }
         else if(this.getGameOver === false) {
